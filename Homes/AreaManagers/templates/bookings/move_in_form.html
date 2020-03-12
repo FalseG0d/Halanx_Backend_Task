@@ -1,0 +1,184 @@
+{% extends 'area_manager_base.html' %}
+
+
+{% block title %}
+Move-In Details
+{% endblock %}
+
+
+{% block heading %}
+Move-In Details
+{% endblock %}
+
+
+{% block main %}
+    <div>
+        <h3 style="color: red">{{ msg }}</h3>
+    </div>
+
+    {% if booking %}
+    <div>
+        <h2>Booking Details</h2>
+        <table class="border" border="1">
+            <tr>
+                <td><b>Booking Id</b></td>
+                <td>{{ booking.id }}</td>
+            </tr>
+            <tr>
+                <td><b>House</b></td>
+                <td>{{ house.name }}, {{ house.address }}</td>
+            </tr>
+            <tr>
+                <td><b>Space</b></td>
+                <td>{{ space.name }} ({{ space.type }})</td>
+            </tr>
+            <tr>
+                <td><b>License Start Date</b></td>
+                <td>{{ booking.license_start_date }}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div>
+        <form id="facility_item_edit_form" action="{% url 'move_in_confirm_view' booking.id %}" method="post">
+            {% csrf_token %}
+            <div>
+                <h3>Edit Sub-Unit facility items</h3>
+                <table>
+                    <thead>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Remark</th>
+                        <th>Remove</th>
+                    </thead>
+                    <tbody id="sub_unit_facility_items">
+                        {% for facility in sub_unit_facilities %}
+                        <tr>
+                            <td>
+                                <select name="item">
+                                    {% for item in sub_unit_facility_items %}
+                                    <option value="{{ item.id }}" {% if item.id == facility.item.id %}selected{% endif %}>
+                                        {{ item.name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td class="quantity"><input type="number" name="quantity" value="{{ facility.quantity }}"></td>
+                            <td><input type="text" name="remark" value="{{ facility.remark }}"></td>
+                            <td id="remove_item"><button class="btn" id="delete_button"><span class="extra">Remove&nbsp;</span>
+                                    <i class="fa fa-trash"></i></button></td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <td>
+                                <select name="item">
+                                    <option disabled selected value> ----------- </option>
+                                    {% for item in sub_unit_facility_items %}
+                                    <option value="{{ item.id }}">
+                                        {{ item.name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td class="quantity"><input type="number" name="quantity" value="1"></td>
+                            <td><input type="text" name="remark" placeholder="Remark"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <button class="btn" type="button" id="add_sub_unit_facility_item">Add facility item &nbsp; <i class="fa fa-plus"></i></button>
+
+            </div>
+
+            <div>
+                <h3>Edit Common Area facility items</h3>
+                <table>
+                    <thead>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Remark</th>
+                        <th>Remove</th>
+                    </thead>
+                    <tbody id="common_area_facility_items">
+                        {% for facility in common_area_facilities %}
+                        <tr>
+                            <td>
+                                <select name="item">
+                                    {% for item in common_area_facility_items %}
+                                    <option value="{{ item.id }}" {% if item.id == facility.item.id %}selected{% endif %}>
+                                        {{ item.name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td class="quantity"><input type="number" name="quantity" value="{{ facility.quantity }}"></td>
+                            <td><input type="text" name="remark" value="{{ facility.remark }}"></td>
+                            <td id="remove_item"><button class="btn" id="delete_button"><span class="extra">Remove&nbsp;</span><i
+                                        class="fa fa-trash"></i></button></td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <td>
+                                <select name="item">
+                                    <option disabled selected value> ----------- </option>
+                                    {% for item in common_area_facility_items %}
+                                    <option value="{{ item.id }}">
+                                        {{ item.name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td class="quantity"><input type="number" name="quantity" value="1"></td>
+                            <td><input type="text" name="remark" placeholder="Remark"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <button type="button" class="btn" id="add_common_area_facility_item">Add facility item &nbsp; <i class="fa fa-plus"></i></button>
+            </div>
+
+            <div>
+                <h3>Notes</h3>
+                <textarea name="notes">{{ booking.move_in_notes | default_if_none:"" }}</textarea>
+            </div>
+
+            <br>
+            <br>
+
+            <div>
+                <button class="btn btn-red" type="submit" id="confirm">Confirm</button>
+                <button class="btn btn-blue" type="button" onclick="window.open('{% url 'move_in_agreement_view' booking.id %}', '_blank');"
+                {% if tenant_profile_missing_fields %}disabled{% endif %}>Download
+                    Rent Agreement &nbsp; <i class="fa fa-download"></i></button>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+
+{% endblock %}
+
+
+{% block script %}
+<script>
+    $(document).ready(function () {
+        ajax_form_submit('#facility_item_edit_form');
+    });
+
+    let sub_unit_row_template = $('#sub_unit_facility_items tr:last').html();
+    let common_area_row_template = $('#common_area_facility_items tr:last').html();
+
+    $('#add_sub_unit_facility_item').click(function () {
+        let row = $('#sub_unit_facility_items tr:last').after('<tr>' + sub_unit_row_template + '</tr>');
+        row.append('<td id="remove_item"><button class="btn" id="delete_button"><span class="extra">Remove&nbsp;</span><i class="fa fa-trash"></i></button></td>');
+    });
+
+    $('#add_common_area_facility_item').click(function () {
+        let row = $('#common_area_facility_items tr:last').after('<tr>' + common_area_row_template + '</tr>');
+        row.append('<td id="remove_item"><button class="btn" id="delete_button"><span class="extra">Remove&nbsp;</span><i class="fa fa-trash"></i></button></td>');
+    });
+
+    $('body').on('click', '#remove_item', function () {
+        $(this).parent('tr').remove();
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load staticfiles %}
+	<style type="text/css">
+		body {
+            padding: 7%;
+        }
+
+		.signature {
+			width: 150,
+		}
+
+		h5 {
+			font-family:Arial,sans-serif;
+			font-size:14px;
+			text-align: center;
+		}
+
+		h4 {
+			font-family:Arial,sans-serif;
+			font-size:12px;
+			text-align: center;
+		}
+
+		p, ol, ul {
+			font-family:Arial,sans-serif;
+			font-size:12px;
+		}
+
+		ol, ul {
+			margin: 0.2em 0;
+			padding: 0 0 0 40px;
+		}
+
+		li {
+			margin: 0.2em 0;
+		}
+
+		ol { counter-reset: item }
+		li{ display: block }
+		li:before { content: counters(item, ".") ". "; counter-increment: item}
+
+		table {
+		    border-collapse: collapse;
+		    width: 100%;
+		}
+
+		td, th {
+		    border: 1px solid black;
+		    vertical-align: top;
+            padding-top: 3px;
+		    padding-left: 5px;
+		    width: 50%;
+		}
+
+		@page {
+			size: a4 portrait;
+			@frame header_frame { /* Static Frame */
+			-pdf-frame-content: header_content;
+			left: 50pt; width: 512pt; top: 50pt; height: 40pt;
+			}
+			@frame content_frame { /* Content Frame */
+			left: 50pt; width: 512pt; top: 90pt; height: 632pt;
+			}
+			@frame footer_frame { /* Another static Frame */
+			-pdf-frame-content: footer_content;
+			left: 50pt; width: 512pt; top: 772pt; height: 20pt;
+			}
+		}
+	</style>
+</head>
+
+
+<body>
+	<h5><u>LEAVE & LICENSE AGREEMENT</u></h5>
+
+	<p>THIS <b>LEAVE & LICENSE AGREEMENT</b>  made in Delhi on {{ agreement_date }}</p>
+
+	<p><b>BETWEEN</b></p>
+
+	<p>{{ owner.name }} {{ owner.correspondant_relation }} {{ owner.correspondant_name }}  resident of {{ owner.address }} hereinafter called "Licensor or Owner" (which expression shall unless it be repugnant to the context or meaning thereof be deemed and mean to include his heirs, successors, administrators, executors, attorneys and assigns) of the First Part.
+	</p>
+
+	<p><b>AND</b></p>
+
+	<p>{{ tenant.name }}, {% if tenant.customer.gender == 'male' %}S/o{% else %}D/o{% endif %} {{ tenant.parent_name }} hereinafter referred to as "Licensee" , with personal, professional and other details, as provided in Schedule I, (which expression shall unless it be repugnant to the context or meaning thereof be deemed and mean to include their heirs, successors, administrators, executors, attorneys, assigns and successors) of the Other Part.
+	</p>
+
+	<p><b>RECITALS:</b></p>
+
+	<ol type="1">
+		<li>WHEREAS the Owner herein has the authority to enter into an agreement for the immovable property, as detailed in Schedule II, (hereinafter be referred to as the "Premises ") comprising of various sub units & Common Area as detailed in Flat Plan at Schedule II. AND WHEREAS that the Premises is provided with furniture & fixtures, electronic items & various other items (hereinafter collectively referred to as the "Said Facilities ") detailed in Schedule III.
+		</li>
+
+		<li>AND WHEREAS the Tenant is desirous of taking the Leave and License of the Sub Unit along with Common Area along with Said Facilities (hereinafter be referred to as the "Said Premises ") as specified in Schedule IV for only residential purpose, from the Owner, which the Owner has agreed to give in the manner and on the terms, conditions, covenants and stipulations as stated hereafter.
+		</li>
+
+		<li>AND WHEREAS that the Owner may grant the Leave and License of the Sub Units and Common Area as detailed in Schedule II along with the Said Facilities to other parties (hereinafter collectively with Tenant be referred to as "Residents" ).
+		</li>
+
+		<li>The Owner confirms having handed over the actual, physical, vacant and peaceful possession of the Said Premises & Said Facilities to the Tenant and the Tenant confirms having received the same, along with specifications mentioned hereunder, complete in all respects and in a good and proper condition.
+		</li>
+	</ol>
+
+	<p><b>NOW IT IS HEREBY AGREED BY AND BETWEEN THE PARTIES AS FOLLOWS:-</b></p>
+
+	<ol>
+		<li><b>Definitions:</b><br>
+		In this Agreement, the terms given below, wherever used, shall have the meanings as ascribed hereunder:</p>
+			<ol>
+				<li><b>"Common Area"</b>  shall mean a part of Premises as depicted in Flat Plan at Schedule II and available to Residents of the Premises
+				</li>
+				<li><b>"License Fee"</b>  shall mean the amount payable by the Tenant to the Owner for the Said Premises & Said Facilities, as specified in Schedule IV.
+				</li>
+				<li><b>"License Fee Commencement Date"</b>  shall mean date as specified in Schedule IV.
+				</li>
+				<li><b>"Sub Unit"</b>  shall mean a part of Premises as per Schedule IV and available exclusively to the Tenant
+				</li>
+				<li>Owner's Authorized Representative <b>("OAR")</b>  shall mean Halanx Technologies Private Limited
+				</li>
+			</ol>
+		</li>
+
+
+		<li><b>Usage:</b><br>
+			<ol>
+				<li>The Tenant is granted the right by Owner to utilize the Premises for its own residential purpose only without any right to sub-license/ sub lease the Premises or part thereof.
+				</li>
+			</ol>
+		</li>
+
+		<li><b>License Period:</b><br>
+			<ol>
+				<li>The Owner does hereby grant Leave and License of the Said Premises & Said Facilities to the Tenant, for a maximum period of eleven (11) months (hereinafter referred to as the "License Period "), commencing from "License Fee Commencement Date " with an option to extend the License Period by confirmation in writing between the Tenant & Owner.
+				</li>
+			</ol>
+		</li>
+
+		<li><b>License Fee:</b><br>
+			<ol>
+				<li>The Tenant shall pay on monthly basis, in advance, with effect from the License Fee Commencement Date, an amount as detailed in Schedule IV (hereinafter referred to as the "License Fee"),  on or before the 2nd day of every month.
+				</li>
+
+				<li>The License Fee is inclusive of only the following charges;
+					<ol>
+						<li>
+							Usage charge for Premises & said Facilities;
+						</li>
+						<li>
+							Society maintenance charges;
+						</li>
+					</ol>
+
+					To further clarify, the License Fee does not include any other charges like electricity bill, water bill (if any) regular maintenance/servicing costs for Premises and Said Appliances like RO filter replacement, replacement of bulbs and switches etc. (detailed in section 9), cost of consumables like DTH recharge, payment of wi-fi, LPG Cylinder, maid charges for cleaning and cooking etc. These charges shall be shared amongst the Residents.
+				</li>
+
+				<li>The OAR reserves the right to collect late payment charges of Rs. 150 per day in the event of non-payment or delayed payment of License Fee as per the clause 4.1 above.
+				</li>
+
+				<li>Such License Fee is subject to increase after expiry of every eleven (11) months by 10% of the last month’s paid License Fee, upon extension of the License Period as per this Agreement.
+				</li>
+
+				<li>Under no circumstance any License Fee shall be adjusted against IFRSD and the Licensee shall pay the License Fee during the period of his stay as per this clause.
+				</li>
+
+				<li>Any payable from Tenant shall be payable by ECS/RTGS in the account of OAR as mentioned below or through any other means as communicated by OAR at a later date.<br>
+                    <br>
+                    <table>
+                        <tr>
+                            <td>
+                                <b>Beneficiary Name</b>
+                            </td>
+                            <td>
+                                HALANX TECHNOLOGIES PRIVATE LIMITED
+                            </td>
+                        </tr>
+                         <tr>
+                            <td>
+                                <b>Account No</b>
+                            </td>
+                            <td>
+                                036705501168
+                            </td>
+                        </tr>
+                         <tr>
+                            <td>
+                                <b>IFSC Code</b>
+                            </td>
+                            <td>
+                                ICIC0000367
+                            </td>
+                        </tr>
+                         <tr>
+                            <td>
+                                <b>Account Type</b>
+                            </td>
+                            <td>
+                                Current Account
+                            </td>
+                        </tr>
+                         <tr>
+                            <td>
+                                <b>Bank & Branch</b>
+                            </td>
+                            <td>
+                                ICICI Bank, Sector 11, Rohini - 110085
+                            </td>
+                        </tr>
+                    </table>
+				</li>
+			</ol>
+		</li>
+
+        <br>
+
+		<li><b>Lock In Period:</b><br>
+			<ol>
+				<li>The Tenant shall have an obligation to pay License Fee for a minimum period as specified in Schedule IV from the License Fee Commencement Date (hereinafter referred to as the "Lock-in Period") failing which  shall lead to forfeit of the IFRSD.
+				</li>
+			</ol>
+		</li>
+
+		<li><b>Interest Free Refundable Security Deposit:</b><br>
+			<ol>
+				<li>The Tenant shall pay the Owner or OAR an amount for the period as specified in Schedule IV, as Interest Free Refundable Security Deposit (hereinafter referred to as "IFRSD") as security for due observance and performance of the terms and conditions and obligations on the part of the Tenant herein before moving in the Said Premises.
+				</li>
+
+				<li>It has been agreed by both the parties that the said IFRSD, only after the expiry of Lock In Period and, on expiry of the License Period or in the event of earlier termination of this Agreement, and agains handing over of possession by the Tenant of the Said Premises and Said Facilities, shall be refunded to the Tenant in one lump-sum through cheque within 07 days, after deducting therefrom all amounts or other charges, if any, outstanding to be paid by the Tenant under as per this Agreement which includes any late payment charges or any self-caused damage charges.
+				</li>
+
+				<li>The IFRSD shall be refunded as per the stipulated timelines stipulated in clause 6.2 upon confirmation by the OAR of the condition of Said Premises and said Facilities when the Tenant vacates and deliver the vacant and peaceful possession of the Said Premises and said Facilities to the Owner.
+				</li>
+			</ol>
+		</li>
+
+		<li><b>Other Payables by Tenant:</b><br>
+			In addition to the payment of monthly License Fee referred to hereinabove, the Residents shall bear and pay the following, from the License Fee Commencement Date, in respect of the Premises:
+			<ol>
+				<li>All costs, charges and expenses for electricity and water consumed including meter rent, equally shared among the Residents, as per the bills that may be received from the concerned authorities, which shall be equally divided between the Residents.
+				</li>
+
+				<li>The Tenant shall be responsible for any damage to the Sub Unit or part of Said Facilities provided in Sub Unit as detailed in Schedule III, except any normal wear and tear, and any cost incurred by the Owner to repair/replace the same shall be borne by the Tenant. The Tenant hereby agrees to pay the cost for repair of the damage in advance to the OAR before repair/replacement of the damage or malfunctioning of the Sub Unit or part of Said Facilities in the Sub Unit as detailed in Schedule III.
+				</li>
+
+				<li>The Residents shall be jointly responsible for any damage to the Common Area and Said Facilities provided in Common Area as detailed in Schedule II, except any normal wear and tear, and any cost incurred by the OAR to repair/replace the same shall be borne equally among the Residents. Any other sharing pattern of the cost incurred by the OAR to repair/replace the same, as mutually agreed by the Residents, should be confirmed to the Owner in writing within twenty four (24) hours from information of the damage as mentioned in the sub-clause 7.2. The Tenant hereby agrees to pay its share of the cost for repair of the damage in advance to the OAR before repair/replacement of the damage or malfunctioning of the Common Area or Said Facilities in the Common Area as detailed in Schedule II. The Residents hereby agree to make the payments referred to in Sub-Clause 7.1, 7.2 and 7.3 above without any delay and default.
+				</li>
+			</ol>
+		</li>
+
+		<li><b>Termination & Notice Period:</b><br>
+			<ol>
+				<li>The Leave & License Agreement can be terminated by either party by giving not less than one (1) month written notice. If, upon termination or expiry of this Leave & License Agreement, the Tenant does not vacate the Scheduled Premises, the Tenant agrees to and shall be obligated to pay twice the License Fee stipulated herein on daily basis for the period of extended stay.
+				</li>
+
+				<li>The Tenant agrees that, the License Fee and Other Payables shall be paid for entire notice period of one (1) month by the Tenant even if the Tenant hands over the Said Premises & Said Facilities to the Owner/OAR before end of Notice Period.
+				</li>
+
+				<li>The Tenant hereby agrees that Halanx has full authority to access the Premises with an intimation to the tenant for showing it to other prospective clients during Notice Period.
+				</li>
+
+				<li>The Tenant agrees that, in the event of failure of due License Fee or Other Payables within 20 days from the due date by the Tenant, the Owner/OAR shall have the right to terminate the License.
+				</li>
+
+				<li>The Tenant hereby agrees that the Owner or OAR shall have the right to deduct IFRSD and terminate this Agreement with 24 hour notice in the event of occurrence of any of the following;
+					<ol type="a">
+						<li>Any unlawful/illegal activity carried out by the Tenant in the Premises or any other activity leading to communal disharmony and /or major destruction of Premises or Said Facility
+						</li>
+
+						<li>Violation of any of the terms of this Leave & License Agreement even after 2 written warning;
+						</li>
+
+						<li>The Owner/OAR having received any written complaint from housing/society/association against the Tenant;
+						</li>
+
+						<li>In the event of the tenant using the scheduled premise for any purpose other than residential.
+						</li>
+					</ol>
+				</li>
+
+				<li>The Tenant shall upon termination of this Leave and License Agreement, shall immediately deliver vacant and peaceful possession of the Premises and Said Facilities to the Owner/OAR.
+				</li>
+			</ol>
+		</li>
+
+		<li><b>Maintenance of Premises & Said Facilities</b><br>
+			<ol>
+				<li>The Owner/OAR, without any charge to Licensee, shall rectify the repair, replacement or maintenance issues in the Premises as reported by the tenant during first 15 days starting from License Fee Commencement Day. Thereafter, any repair, replacement or maintenance coming under the responsibilities of Licensee as per clause 9.2 below shall be borne and paid by the Licensee.
+				</li>
+
+				<li>Maintenance responsibilities, prepared in compliance with the Model Residential Tenancy Act, 2011, a draft provided by Ministry of Housing & Urban poverty alleviation, Govt. of India. division of is as under;
+
+					<table>
+						<tr>
+							<td>
+								<p><b>To be borne and paid by the Licensee</b></p>
+							</td>
+							<td>
+								<p><b>To be borne and paid by the Owner</b></p>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p>1. Change of tap washers and taps, drain cleaning, water closet repairs, wash basin repairs, bath-tub repairs, circuit breaker repairs, fan regulator, switches and socket repairs, replacement of bulbs and lighting material including LED bulbs, CFL bulbs tube lights
+								</p>
+
+								<p>2. Repairs and replacement of electrical equipment except major internal and external wiring change, Kitchen fixtures repairs, Replacement of knobs and locks of doors, cupboard, windows etc., replacement of flynets, Replacement of glass panels in windows, doors etc.
+								</p>
+
+								<p>3. Periodic maintenance of private gardens and open spaces, if any, let out to the Licensee.
+								</p>
+
+								<p>4. Periodic maintenance/minor wear & tear repair of all electrical appliances including geysers, refrigerator, washing machine, RO purifier including change of filters & its pump, Television. Microwave, water coolers etc.
+								</p>
+							</td>
+							<td>
+								<p>1. Structural Repairs except those necessitated by the damage caused by the Licensee
+								</p>
+
+								<p>2. Changing plumbing pipes (pipes for when necessary
+								</p>
+
+								<p>3. Any major repair due to natural wear & tear of appliances & furniture. The Licensee shall pay for such damages if they cause it.
+								</p>
+
+								<p>4. Any repair, replacement & maintenance issues arising during the first 15 days from the License Fee Commencement Day. Thereafter, the charges for such maintenance shall be borne by Licensee.
+								</p>
+
+								<p><b>However, any repair or maintenance, on account of damage/unintended/wrong use by tenants shall be borne by tenants</b></p>
+							</td>
+						</tr>
+					</table>
+				</li>
+
+				<li>Tenant shall promptly inform the OAR within twenty four (24) hours of any damage or malfunctioning of the Premises, Said Premise or Said Facilities.
+				</li>
+
+				<li>After 15 days of License Fee Commencement Day, service visit charges of Rs. 250 per visit shall be paid by the Licensee. This charge does not include the cost of parts and consumables, if required, and shall be paid, in addition, by the Residents.
+				</li>
+
+				<li>The Tenant shall maintain the Said Premise & Said Facilities in good condition and state and shall abide by all bye-laws, rules and regulations of the Government, Municipal Corporation, society association and / or any other authorities and local bodies and shall attend, answer and be responsible for all deviations or violations as are committed by the Tenant of any of such bye laws, rules and regulations. The Tenant shall further use the Said Premise & Said Facilities with due care and caution, and keep the same, walls, glass windows, sewers, drains, pipes and appurtenances thereto in good tenable condition.
+				</li>
+
+				<li>The Tenant agrees not to put any nails/tape on the wall or any such thing which may destroy or damage the paint. If Tenant wants to hang something on the wall then the same should only be done by the use of plastic hooks or Blu-tack at minimum places.
+				</li>
+
+				<li>The Tenant shall permit the Owner and/or its OAR, with at maximum one (01) working days prior notice to enter the Premises for repairs or inspection, during the normal working hours and in the presence of the Tenant or representative of the Tenant.
+				</li>
+
+				<li>The Tenant hereby understands that the Owner/OAR shall not be responsible for the actions or deeds of contractors or vendors who come for repair or maintenance activities. In all such circumstances the Tenant shall ensure that his/her representative is present during the repair and maintenance work to ensure that the Tenant’s concerns are addressed and the valuables and belongings are safely maintained.
+				</li>
+			</ol>
+		</li>
+
+		<li><b>Tenant Covenants:</b><br>
+			The Tenant does hereby covenant with the Owner as follows:-
+			<ol>
+				<li>The Tenant hereby agrees and confirms that it shall pay the License fee and all other payments as agreed as per this Agreement without any delay or default. Tenant shall withhold the Rent or any other payable as per this Agreement or any reason including the event any appliance, equipment or part of the Scheduled Premises requires repair or replacement. The Tenant must have it addressed through the OAR’s services.
+				</li>
+
+				<li>The Tenant shall abide by the social norms accepted by the society and neighbors regarding entertaining guests and maintaining a peaceful environment.
+				</li>
+
+				<li>Tenant shall keep visits from close relatives limited to a period of 7 days. Any extension of same should be notified in writing, and be taken permission from the OAR. Any such visits should be in consent with other Residents in the Premises.
+				</li>
+
+				<li>The Tenant will ensure that its visitors comply with the society rules and regulations and make an entry in the security register every time they visit the Schedule Property. In case of foreign Nation Visitor, Tenant is responsible to submit the required documents to security, in case the same is so required by the security as per the norms of the society.
+				</li>
+
+				<li>The Tenant understands and agrees that he/she shall be responsible for any/all actions by him/her/their guests visiting the property and the Owner/OAR are indemnified of any consequence.
+				</li>
+
+				<li>The Tenant shall not alter or redesign the structure of the existing building of the Said Premises, or undertake any structural changes to the Said Premises except with the prior written approval of the Owner. The Tenant shall not erect any partition for making cabins or false ceiling at any time during the License Period.
+				</li>
+
+				<li>The Tenant agrees to provide its full cooperation for completion of individual security check including police verification, and verification with guardians/parents and office. The Tenant hereby agrees to provide to the Owner various documents as under;
+					<ol>
+						<li>Xerox / scanned copy of the Tenant’s Passport or Xerox / scanned copy of the Tenant’s Driving License
+						</li>
+
+						<li>Tenant’s permanent address along with scanned / Xerox copy of its proof
+						</li>
+
+						<li>Tenant’s employee card or letter from the HR/authorized person confirming Tenant’s employment with the company
+						</li>
+
+						<li>Contact details of parents (address and mobile number)
+						</li>
+
+						<li>Emergency contact detail
+						</li>
+					</ol>
+				</li>
+			</ol>
+		</li>
+
+		<li><b>Other Conditions :</b><br>
+			<ol>
+				<li>It is agreed by and between the parties hereto that if at any time during the term of the License Period, the Said Premises or any part thereof shall be destroyed or damaged due to any force majeure circumstances, acts, events, conditions or occurrences beyond the control and not arising out of the	fault or negligence of the affected Party and shall include acts of God like earthquake, lightning, tempest, fire, acts of war, riot, bombing, civil commotion, terrorist acts and agitation or other irresistible force so as to become unfit for occupation and use due to any cause not attributable directly or indirectly to the Tenant, then, the Leave and License hereby created shall forthwith stand terminated and the Owner/ through OAR shall forthwith refund the unadjusted IFRSD and any other amounts to the Tenant, after deducting therefrom all amounts or other charges if any, outstanding to be paid by the Tenant as per this Agreement.
+				</li>
+
+				<li>Notwithstanding any other agreement, deed, or exchange of the letters or discussions in the matter of the Leave & License of the Said Premises, the terms of this Leave & License Agreement alone shall prevail and binding on parties.
+				</li>
+
+				<li>In respect of the matters not covered by this Leave & License Agreement the Owner and the Tenant will be governed by the law in force and as applicable to such matters.
+				</li>
+			</ol>
+
+			<p>In case of any dispute or difference arising between the Parties hereto in any of the matters under this Leave and License Agreement or interpretation or implementation of any of the terms and conditions herein, the same shall be resolved through arbitration under the Arbitration and Conciliation Act, 1996. Any such arbitration shall be conducted by a three member arbitral tribunal with each of the parties appointing their respective arbitrators and the two arbitrators so appointed shall appoint the presiding arbitrator. The venue of the arbitration shall be in Delhi. The parties shall pay the cost of arbitration as may be directed by the Arbitrators in their Award.
+			</p>
+		</li>
+	</ol>
+
+	<div style="page-break-before: always;"></div>
+	<h4><u>SCHEDULE I</u></h4>
+
+	<table>
+		<tr>
+			<td><p>Name</p>
+			</td>
+			<td><p>{{ tenant.customer.name }}</p>
+			</td>
+		</tr>
+		<tr>
+			<td><p>Date of Birth</p>
+			</td>
+			<td><p>{{ tenant.customer.dob | date:'d M, Y' }}</p>
+			</td>
+		</tr>
+		<tr>
+			<td><p>Personal E-mail ID</p>
+			</td>
+			<td><p>{{ tenant.customer.user.email }}</p>
+			</td>
+		</tr>
+		<tr>
+			<td><p>Mobile Number</p>
+			</td>
+			<td><p>{{ tenant.customer.phone_no }}</p>
+			</td>
+		</tr>
+		<tr>
+			<td><p>Parent (Father/ Mother) Name</p>
+			</td>
+			<td><p>{{ tenant.parent_name }}</p>
+			</td>
+		</tr>
+		<tr>
+			<td><p>Parent's Contact Number</p>
+			</td>
+			<td><p>{{ tenant.parent_phone_no }}</p>
+			</td>
+		</tr>
+		<tr>
+			<td><p>Permanent Address</p>
+			</td>
+			<td><p>{{ tenant.permanent_address }}</p>
+			</td>
+		</tr>
+		<tr>
+			<td><p>Emergency contact name</p>
+			</td>
+			<td><p>{{ tenant.emergency_contact_name }}</p>
+			</td>
+		</tr>
+		<tr>
+			<td><p>Emergency contact relationship</p>
+			</td>
+			<td><p>{{ tenant.emergency_contact_relation }}</p>
+			</td>
+		</tr>
+		<tr>
+			<td><p>Emergency contact email</p>
+			</td>
+			<td><p>{{ tenant.emergency_contact_email }}</p>
+			</td>
+		</tr>
+		<tr>
+			<td><p>Emergency contact phone</p>
+			</td>
+			<td><p>{{ tenant.emergency_contact_phone_no }}</p>
+			</td>
+		</tr>
+		<tr>
+			<td><p>Employer name</p>
+			</td>
+			<td><p>{{ tenant.company_name }}</p>
+			</td>
+		</tr>
+		<tr>
+			<td><p>Office Address</p>
+			</td>
+			<td><p>{{ tenant.company_address }}</p>
+			</td>
+		</tr>
+		<tr>
+			<td><p>Office Phone Number</p>
+			</td>
+			<td><p>{{ tenant.company_phone_no }}</p>
+			</td>
+		</tr>
+		<tr>
+			<td><p>Official E-mail ID</p>
+			</td>
+			<td><p>{{ tenant.company_email }}</p>
+			</td>
+		</tr>
+		<tr>
+			<td><p>Position held</p>
+			</td>
+			<td><p>{{ tenant.job_position }}</p>
+			</td>
+		</tr>
+		<tr>
+			<td><p>Employment dates</p>
+			</td>
+			<td><p>{{ tenant.company_joining_date | date:'d M, Y' }}</p>
+			</td>
+		</tr>
+	</table>
+
+	<h4><u>SCHEDULE II</u></h4>
+
+	<table>
+		<tr>
+			<td><p>Premises</p>
+			</td>
+			<td><p>{{ booking.space.house.name }}, {{ booking.space.house.address }}</p>
+			</td>
+		</tr>
+		<tr>
+			<td><p>Sub Unit</p>
+			</td>
+			<td><p>{{ booking.space.name }} ({{ booking.space.subtype }})</p>
+			</td>
+		</tr>
+	</table>
+
+	<div style="page-break-before: always;"></div>
+
+	<h4><u>SCHEDULE III</u></h4>
+
+	<h4 style="text-align: left;"><u>List of Said Facilities</u></h4>
+
+	<table style="text-align: center;">
+		<tr>
+			<td colspan="2"><p><b>Sub Unit</b></p>
+			</td>
+			<td colspan="2"><p><b>Common Area</b></p>
+			</td>
+		</tr>
+
+		{% for facility in facilities %}
+		<tr>
+            {% for item in facility %}
+			<td style="width: 25%"><p>{{ item }}</p>
+			</td>
+            {% endfor %}
+		</tr>
+		{% endfor %}
+	</table>
+
+	<br>
+	<h4><u>SCHEDULE IV</u></h4>
+
+	<table>
+		<tr>
+			<td><p><b>Sub Unit</b></p>
+			</td>
+			<td><p><b>{{ booking.space.name }}</b></p>
+			</td>
+		</tr>
+		<tr>
+			<td><p><b>License Fee Commencement Date</b></p>
+			</td>
+			<td><p><b>{{ booking.license_start_date | date:'d M, Y' }}</b></p>
+			</td>
+		</tr>
+		<tr>
+			<td><p><b>License Fee</b></p>
+			</td>
+			<td><p><b><img src="https://cdn3.iconfinder.com/data/icons/indian-rupee-symbol/800/Indian_Rupee_symbol.png" width="8" height="12">{{ booking.rent }}</b></p>
+			</td>
+		</tr>
+		<tr>
+			<td><p><b>IFRSD</b></p>
+			</td>
+			<td><p><b><img src="https://cdn3.iconfinder.com/data/icons/indian-rupee-symbol/800/Indian_Rupee_symbol.png" width="8" height="12">{{ booking.security_deposit }}</b></p>
+			</td>
+		</tr>
+		<tr>
+			<td><p><b>Lock In Period</b></p>
+			</td>
+			<td><p><b>{{ booking.lock_in_period }} months</b></p>
+			</td>
+		</tr>
+	</table>
+
+	<br>
+	<p>IN WITNESS WHEREOF the Parties have hereunto set and subscribed their respective hands in duplicate the day, month and year first hereinabove written.
+	</p>
+
+	<table>
+		<tr>
+			<td>
+				<p>
+					<b><u>Licensor</u></b>
+					<br>
+					<br>
+					Owner or OAR through its Authorized Signatory pursuant to the powers and authorities conferred upon him / a power of attorney granted to  him by the Board of Directors of the Company vide their resolution dated September 25, 2015
+				</p>
+			</td>
+			<td>
+				<p>
+					<b><u>Licensee</u></b>
+					<br>
+					<br>
+					Tenant Name: {{ tenant.name }}<br>
+					S/o {{ tenant.parent_name }}<br>
+					Permanent Address: {{ tenant.permanent_address }}
+				</p>
+			</td>
+		</tr>
+		<tr>
+			<td><p>Witness</p>
+			</td>
+			<td><p>Witness</p>
+			</td>
+		</tr>
+		<tr>
+			<td><p>Name: </p>
+			</td>
+			<td><p>Name: </p>
+			</td>
+		</tr>
+		<tr>
+			<td><p>Address:</p>
+			</td>
+			<td><p>Address:</p>
+			</td>
+		</tr>
+	</table>
+
+	<img align="right" src="{{digital_signature}}" class="signature" style="margin:50px 0px" width="150" height="50">
+</body>
+</html>

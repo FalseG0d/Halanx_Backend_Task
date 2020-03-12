@@ -1,0 +1,23 @@
+{% extends 'area_manager_base.html' %}
+
+
+{% block title %}
+Home
+{% endblock %}
+
+
+{% block heading %}
+Home
+{% endblock %}
+
+
+{% block main %}
+    <ul class="home">
+        <li><a href="{{ house_visits_url }}">House Visits</a></li>
+        <li><a href="{{ house_edit_index_url }}">House Edit</a></li>
+        <li><a href="{{ tenant_manage_url }}">Manage Tenants</a></li>
+        <li><a href="{{ cash_collection_url }}">Cash Collection</a></li>
+        <li><a href="{{ cash_deposit_url }}">Cash Deposit</a></li>
+        <li><a href="{{ space_update_url }}">Space Edit</a></li>
+    </ul>
+{% endblock %}

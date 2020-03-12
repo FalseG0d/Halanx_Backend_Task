@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load staticfiles %}
+	<style type="text/css">
+		body {
+            padding: 7%;
+        }
+
+		h5 {
+			font-family:Arial,sans-serif;
+			font-size:14px;
+			text-align: center;
+		}
+
+		h4 {
+			font-family:Arial,sans-serif;
+			font-size:12px;
+			text-align: center;
+		}
+
+		p, ol, ul {
+			font-family:Arial,sans-serif;
+			font-size:12px;
+		}
+
+		ol, ul {
+			margin: 0.2em 0;
+			padding: 0 0 0 40px;
+		}
+
+		li {
+			margin: 0.2em 0;
+		}
+
+		table {
+		    border-collapse: collapse;
+		    width: 100%;
+		}
+
+		td, th {
+		    border: 1px solid black;
+		    vertical-align: top;
+            padding-top: 3px;
+		    padding-left: 5px;
+		    width: 50%;
+		}
+
+		@page {
+			size: a4 portrait;
+			@frame header_frame { /* Static Frame */
+			-pdf-frame-content: header_content;
+			left: 50pt; width: 512pt; top: 50pt; height: 40pt;
+			}
+			@frame content_frame { /* Content Frame */
+			left: 50pt; width: 512pt; top: 90pt; height: 632pt;
+			}
+			@frame footer_frame { /* Another static Frame */
+			-pdf-frame-content: footer_content;
+			left: 50pt; width: 512pt; top: 772pt; height: 20pt;
+			}
+		}
+	</style>
+</head>
+
+
+<body>
+
+	<div align="center">
+		<img src="{{ site }}/static/img/service_agreement_homepage.jpg">
+	</div>
+
+	<div style="page-break-before: always;"></div>
+
+	<h5>SERVICES AGREEMENT</h5>
+
+	<br>
+
+	<p>This services agreement ("Agreement") is made and entered into on <u>{{ agreement_date }}</u>.</p>
+
+	<h4>BY AND AMONG</h4>
+
+	<p>
+		HALANX TECHNOLOGIES PRIVATE LIMITED, a private limited company registered under the Companies Act, 2013 having its Registered Office at A8/8, Second Floor, Sector 17, Rohini, Delhi 110085 (hereinafter referred to as the 'Halanx Homes' which expression shall, unless it to be repugnant to the context or meaning thereof, deem to mean and include its executors, administers and permitted assigns), of the FIRST PARTY;
+	</p>
+
+	<h4>AND</h4>
+
+	<p>
+        <u>{{ owner.name }}</u>, {{ owner.correspondant_relation }} of <u>Mr. {{ owner.correspondant_name }}</u> residing at <u>{{ owner.address }}</u> hereinafter referred to as the "Owner", (which term shall, unless it is repugnant to the context, mean and include its executors, administers and permitted assigns) of the SECOND PARTY; Halanx Homes and the Owner are hereinafter collectively referred to as the "Parties" and individually as the "Party".
+	</p>
+
+	<h4 style="text-align: left;">WHEREAS</h4>
+
+	<ol type="A">
+		<li>Halanx Homes is engaged in the business of building a technology based discovery platform for residential properties owners, facilitating license fee transactions and providing various services and processes around it through online or offline process through its website www.halanxhomes.com ("Website").</li>
+
+        <li>Owner is the actual owner of / legal representative of all the owners/ entitled to lease the property located at <u>{{ house.address.complete_address }}</u> ('Scheduled Property').</li>
+
+		<li>The Owner is desirous of using one or more of the services offered by Halanx Homes, detailed in Annexure A of the Agreement ('Services'), provided by Halanx Homes for the Scheduled Property subject to the terms and conditions as mentioned in this Agreement.</li>
+
+		<li>Based on the mutual understanding and agreement among the Parties, the Parties have decided to enter into this agreement on the terms and conditions herein below:</li>
+	</ol>
+
+	<h4 style="text-align: left;">NOW THEREFORE THIS AGREEMENT WITNESSETH AS UNDER:</h4>
+
+	<h4 style="text-align: left;color: red">1. TERM</h4>
+	<p>
+        The term of this Agreement shall commence from <u>{{ house.agreement_commencement_date | date:'d M, Y' }}</u> ("Effective Date") and shall remain in full force and effect until either Party terminates the Agreement ("Term"). In the event that either Party desires to terminate the Agreement during the Term, the Agreement shall be terminated in accordance with Clause 10 of this Agreement.
+	</p>
+
+	<h4 style="text-align: left;color: red">2. APPOINTMENT AND EXCLUSIVITY OF ENGAGEMENT</h4>
+	<p>
+		The Owner hereby appoints and engages Halanx Homes on an exclusive basis during the Term of this Agreement to provide residential services with respect to the Scheduled Property. The Parties agree that Halanx Homes shall be the sole source of, agreement to any license of the Scheduled Property, whether such agreement is made in writing or orally, though Owner can engage other sources during notice period.
+	</p>
+
+	<h4 style="text-align: left;color: red">3. LICENSING OF SAID PREMISES</h4>
+	<p>
+		Halanx Homes and Owner shall partner to give the Scheduled Property on license to the verified Licensee as per the following process:
+	</p>
+
+	<ol type="1">
+		<li>Owner shall specify his Licensee preference and verification requirements.</li>
+		<li>Owner shall specify the monthly License Fee expected from Licensee</li>
+		<li>Owner & Halanx Homes shall execute this service agreement.</li>
+		<li>Halanx Homes shall onboard the house on its website including Licensee preference, monthly License Fee, list individual rooms at a rate including its charges.</li>
+		<li>Halanx Homes shall show the Said Premises to interested parties & if any party expresses interest, Halanx Homes shall collect verification details from the Licensee.</li>
+		<li>The Owner authorizes Halanx Homes to negotiate and finalize the monthly License Fee</li>
+		<li>Halanx Homes shall execute the Leave and License agreement with Tenant on behalf of owner & complete other move-in formalities on behalf of Owner.</li>
+		<li>During the term of the Leave and License Agreement, Owner has authorized Halanx Homes to collect the monthly License Fee from tenants and deposit it in his/her account after deducting its charges. Halanx Homes acts as a facilitator and is not the direct licensee to the Owner. Halanx Homes shall make a separate payout to the Owner in case the Licensee defaults on payment of the License Fee.</li>
+		<li>The Owner shall not change the License Fee before end of eleven months from the date of move-in of the Licensee if the Licensee is still staying in the Scheduled Property</li>
+		<li>Halanx Homes shall facilitate maintenance work required at the Scheduled Property, with actual charges paid by Owner or Tenant as per Clause 8.</li>
+		<li>Move-in Date shall mean the date on which the Licensee physically intends to/actually occupies the Scheduled Property
+		</li>
+	</ol>
+
+	<h4 style="text-align: left;color: red">4. SCOPE OF SERVICES</h4>
+	<p>
+		4.1 Halanx Homes shall provide the owner with services as mentioned in Annexure A of this Agreement ("Services") to enable licensing of the Scheduled Property to suitable Licensee. Such Services will start from Effective Date.
+
+		<br>
+		<br>
+
+		4.2 The owner hereby grants authority to Halanx Homes to perform all actions necessary to discharge services to the Owner, Scheduled Property & tenants as detailed in Annexure A. Any such actions shall be deemed ratified & approved by the owner. Additionally, the Owner grants Halanx Homes the right to enter the Scheduled Property at anytime during the term hereof.
+	</p>
+
+	<h4 style="text-align: left;color: red">5. LICENSEE VERIFICATION</h4>
+	<p>
+		5.1. For verification, Halanx Homes will mandatorily collect ID proof & address Proof of Licensee. It shall further collect Licensee's employment proof, wherever available & permanent address details.
+
+		<br>
+		<br>
+
+		5.2. Halanx Homes shall also assist Owner for the verification of the Licensee through police department of the concerned state where the Licensee resides.
+
+		<br>
+		<br>
+
+		5.3. Once a Licensee expresses interest to take on License the Scheduled Property, all these verification details shall be submitted to the Owner for approval.
+
+		<br>
+		<br>
+
+		5.4. The owner shall have a 48-hour window to approve or reject the tenant, failing which the Licensee shall be considered to have been approved by the Owner. The Licensee can move-in to the property only after Owner's approval.
+
+		<br>
+		<br>
+
+		5.5. In case of rejection, the Owner shall specify the reason, which shall be communicated to the interested party & Halanx Homes shall continue showing the Scheduled Property to other prospects
+	</p>
+
+	<h4 style="text-align: left;color: red">6. SECURITY DEPOSIT</h4>
+	<p>
+		Owner authorizes Halanx Homes to keep all or part of the security deposit of the scheduled property, which will be refunded to tenant as per the clauses, after deduction of any dues, if any.
+	</p>
+
+	<h4 style="text-align: left;color: red">7. LICENSE FEE</h4>
+	<p>
+		7.1. The Owner, in discussion with Halanx Homes, shall have the absolute authority to decide the monthly License Fee per Licensee and minimum lock-in period for the Licensee, which shall not exceed 6 months from the date from which the Licensee is liable to pay License Fee for the Scheduled Property.
+
+		<br>
+		<br>
+
+		7.2. The Owner shall be entitled to change the License fee before the tenant moves in. Thereafter, he shall change the License fee based on mutual discussion with the tenant at the end of every lease period.
+
+		<br>
+		<br>
+
+		7.3. For any given month, Halanx Homes shall collect the License Fee from the Licensee(s) & deposit it in Owner's virtual Halanx wallet before 3rd of the next month after deducting its charges & any other amounts payable by the Owner to Halanx Homes. And that amount in wallet can be transferred to owner's bank account whenever he or she requests. For example – rent for the month of April shall be paid to the Owner on or before 3rd May.
+
+		<br>
+		<br>
+
+		7.4. In case of default in payment by a Licensee in any given month, Halanx Homes shall remind the tenant via email on daily basis for the payment till the end of the coming month. If it doesn't receive the License Fee within a month of its becoming due, Halanx Homes, on Owner's behalf, shall initiate legal proceeding against the defaulter tenant asking them to pay the due & vacate the property at the earliest.
+
+		<br>
+		<br>
+
+		7.5. If Halanx Homes determines that the owner is owed License Fee money from tenants for more than 30 days, with necessary consent from owner, reduce the security deposit payout to the tenant and ask the tenant to move out.
+
+		<br>
+		<br>
+
+		7.6. To allow sufficient time for rent collection in case of late payment/default, Halanx Homes shall have the option to collect License Fee from Licensees at the beginning of month.
+
+		<br>
+		<br>
+
+		7.7. For purposes of clarity, it is expressly agreed that the Owner's rental income is based on actual occupancy at the property. This Agreement creates no liability on Halanx Homes for rental payment during the period the property remains fully or partially vacant.
+
+		<br>
+		<br>
+
+		7.8. It is expressly agreed that all payments shall be made through bank accounts/Account Payee Cheques only.
+	</p>
+
+
+	<h4 style="text-align: left;color: red">8. OTHER PAYMENTS</h4>
+	<p>
+		The Said Premises, fittings provided in the Said Premises as well as the furnishings & appliances etc, if provided by Owner in Said Premises shall require maintenance/ repair at different times during the period of this agreement. The same shall be settled in following way
+	</p>
+
+		<h4 style="text-align: left;">8.1. Maintenance of Said Premises:</h4>
+
+		<p>
+			8.1.1. The following list has been prepared in compliance with Model Residential Tenancy Act 2011, a draft by Ministry of Housing & Urban poverty alleviation, Govt. of India. As per this draft Act, the owner will be responsible for repairs relating to matters falling as under:
+		</p>
+
+		<ol type="1">
+			<li>Structural Repairs except those necessitated by the damage caused by the tenant.</li>
+			<li>Whitewashing of walls and painting of doors and windows. The owner shall paint the interior, doors & windows at the beginning of the agreement period & thereafter Halanx Homes shall ensure the same after minimum service agreement tenure of 3 years.</li>
+			<li>Changing Internal plumbing pipes when necessary</li>
+			<li>Any type of electricity & water supply problem arising from outside the premises like voltage fluctuation.</li>
+		</ol>
+
+		<p>
+			8.1.2. While taking handover of the Said Premises from the owner, fresh painting and cleaning of the Said Premises shall be done by the Owner. Halanx Homes shall inspect the Said Premises and any repair work that might be required as communicated to the owner within 2 days from handover of property shall be addressed and borne by the Owner.
+
+		<br>
+		<br>
+
+			8.1.3. Any repair, replacement & maintenance issues in the Said Premises arising during the first 15 days of the moving in of the first tenant, will be born by owner. Thereafter, the charges for such maintenance shall be borne by tenants. Any cost incurred in relation to the above shall be settled in the following manner:
+		</p>
+
+		<ol type="i">
+			<li><b>Time</b><br>
+				Beginning of Agreement at the time of handover
+			</li>
+			<li><b>Expense Nature</b><br>
+				Payment, if any, made by Halanx Homes on behalf of owner to tenants/vendor/Society Maintenance etc. any other person for structural repairs, wear & tear, cleaning of house etc.
+			</li>
+			<li><b>Settlement Process</b><br>
+				Halanx Homes shall submit necessary bills, estimates & invoices & seek owner's approval over email. The amount paid by Halanx Homes shall be adjusted against payable monthly rent.
+			</li>
+			<li><b>Time</b><br>
+				During Lease Period
+			</li>
+			<li><b>Expense Nature</b><br>
+				<br>
+				Amount less than Rs. 500 towards structural repair
+
+				<br>
+				<br>
+
+				Halanx Homes shall submit necessary bills, estimates & invoices & seek owner's approval over email. Owner shall approve or reject within 24 hours or it will be considered auto-approved
+
+				<br>
+				<br>
+				<br>
+
+				Amount more than Rs. 500 towards structural repairs.
+
+				<br>
+				<br>
+
+				Halanx Homes shall submit necessary bills, estimates & invoices & seek owner's approval over email. Owner shall approve or reject within 48 hours or it will be considered auto-approved
+
+				<br>
+				<br>
+				<br>
+
+				Pending utility bills & other statutory payments including society maintenance fees
+
+				<br>
+				<br>
+
+				Halanx Homes is authorized to pay upto INR 5000 & reimburse the same from owner's rent without having to wait for owner's approval if it doesn't come within 24 hours Explicit Owner approval shall be required for payment above Rs. 5000.
+
+				<br>
+				<br>
+				<br>
+
+				The owner shall be able to dispute a payment within 48 hours of such a payment being made on his behalf with necessary documentation including original bills & receipts. If Halanx Homes, based on the documents submitted, determines that the owner is owed money, it shall send a refund payout to the owner's wallet within next 48 hours.
+			</li>
+		</ol>
+	</p>
+
+	<h4 style="text-align: left;">8.2. MAINTENANCE OF FIXTURES, FURNISHING & APPLIANCES PROVIDED AT THE PROPERTY BY OWNER</h4>
+
+	<p>
+		8.2.1. Halanx Homes shall provide a fixture checklist to the Owner at start of the Agreement based on which the Owner shall make the necessary arrangements. This checklist shall detail the repair & replacement of existing fitting requirement before onboarding the Said Premises on Halanx Homes Network. Halanx Homes, at the Owner's option, shall facilitate completing the items as per checklist at the property through its partner vendors.
+		<br>
+		<br>
+
+		8.2.2. The cost of maintaining the furniture and fixture shall be divided as under:
+	</p>
+
+		<ul>
+			<li><b>Paid by Tenant</b>
+				Day to day maintenance including:
+				<ol type="1">
+					<li>Changing of tap washers and taps, Drain cleaning, Water closet repairs, Wash Basin repairs</li>
+					<li>Circuit breaker repairs, Switches and socket repairs, Replacement of bulbs, Repairs and replacement of electrical equipment except major internal and external wiring change</li>
+					<li>Periodic maintenance of private gardens and open spaces, if any, let out to the tenant.</li>
+				</ol>
+			</li>
+			<li><b>Paid by Owner</b>
+				Required periodic servicing and breakdown maintenance on account of age of the appliances, major manufacturer fault, power supply fluctuation or out of warranty (and need replacement) during the License Period of the all electronic appliances and furnishing provided by the Owners. However, any breakdown maintenance, on account of damage/unintended/wrong use by tenants shall be borne by tenants.
+			</li>
+		</ul>
+
+		<p>
+				8.2.3. Owner owned fixtures & furnishings shall be subject to wear & tear depreciation as per Indian GAAP ("Generally Accepted Accounting principles") to ascertain their value in case of a damage claim. The Owner shall store & furnish receipts, bills, invoices & warranty cards, if any, of furnishing & fittings as & when a damage claim is filed for faster settlement.
+
+		<br>
+		<br>
+
+		8.3. The Owner shall respond to any maintenance request approval within 48 hours. In case Halanx Homes pays any maintenance charges on behalf of the Owner, such payments shall be governed under "Other Payments" section of this agreement.
+
+		<br>
+		<br>
+
+		8.4. In case damages to the property or its furnishing are caused by tenants, the Owner / Halanx Homes shall be entitled to recover damage charges from the security deposit. This is to clarify that Halanx Homes shall be liable to repair at the scheduled premise including electric, plumbing, furniture & appliance repair. Parts, consumables & service charge incurred during service visit shall be borne by the tenants.
+	</p>
+
+
+	<h4 style="text-align: left;color: red">9. HALANX HOMES CHARGES</h4>
+	<p>
+		In lieu of its Services, Halanx Homes service Charges are as under;
+
+		<br>
+		<br>
+
+		9.1. Halanx Homes shall deduct its Service Charges i.e ... % ("House Licensing Service Charge") of the License Fee due from the Licensees every month towards the service charges. For purpose of clarity, this Service Charge is applicable only on License Fee due from Licensees for a particular month and creates no obligation on Halanx Homes to pay owner if there are no Licensees staying in the Scheduled Property.
+
+		<br>
+		<br>
+
+		9.2. Any payments made under this Agreement or any associated Leave and License Agreement pertaining to the Scheduled Property will be subject to applicable withholding taxes, if any.
+
+		<br>
+		<br>
+
+		9.3. The Owner hereby authorizes Halanx Homes for collection & deposit of License Fee & security deposit on his behalf from tenants in the scheduled property as has been mutually agreed between the parties.
+	</p>
+
+	<p>
+
+		9.4. The Owner shall be responsible for paying Halanx Homes all the Charges subject to the terms and conditions contained therein. Any services that are not mentioned in Annexure A shall not be deemed to be included & charges for such services will be separate and if provided, the Owner shall pay for it separately. Halanx Homes reserves the right to deduct its charges from payable to the Owner, if any.
+
+		<br>
+		<br>
+
+		9.5. Halanx Homes reserves the right to change its prices, as may be mutually agreed subject to 60 days' notice to the Owner.
+	</p>
+
+	<h4 style="text-align: left;color: red">10. TERMINATION</h4>
+	<p>
+		10.1. Notwithstanding anything in this Agreement, either party can terminate the Agreement
+			<br>
+			10.1.1. By giving One month's advance notice to the Other Party
+			<br>
+			10.1.2. Immediately, provided there are no Licensees staying in the Scheduled Property, by paying a penalty to the Other Party equivalent to the License Fee paid/received for the immediately preceding Two month which is based on actual occupancy.
+			<br>
+			10.1.3. By mutual agreement between the Parties
+
+		<br>
+		<br>
+
+		10.2. Upon Termination, any dues owed by either Party to the other shall be settled within seven (7) days of termination of the Agreement.
+	</p>
+
+	<h4 style="text-align: left;color: red">11. OWNER'S COVENANTS</h4>
+	<p>
+		11.1. The Owner shall ensure that during the Term it shall provide Halanx Homes with such adequate authority as may be required to allow inspection and examination of the Scheduled Property by the interested Licensees.
+
+		<br>
+		<br>
+
+		11.2. The Owner shall consent to any legal proceedings initiated by Halanx Homes against the Licensee for failure by the Licensee to comply with the provisions of the Leave and License Agreement.
+
+		<br>
+		<br>
+
+		11.3. The Owner shall execute an Authorization Letter (as per the format in Annexure C & Annexure D in favor of Halanx Homes for and on behalf the Owner with respect to the Scheduled Property in relation to collection and deposit of license fee and advance and any such charges.
+
+		<br>
+		<br>
+
+		11.4. The Owner agrees that he/she will not discriminate against any prospective licensee or any licensee staying in the Scheduled Property on the basis of caste, creed, colour, religion or food preferences.
+
+	<h4 style="text-align: left;color: red">12. REPRESENTATIONS AND WARRANTIES</h4>
+	<p>
+		12.1. The Owner undertakes that he is the lawful owner, or has been solely authorized by the lawful owner of the Scheduled Property to enter into this agreement. The Owner further undertakes that Halanx Homes shall not be liable for any dispute regarding ownership of the Scheduled Property or the validity of entering into this Agreement during the Term of the Agreement and the Owner shall keep Halanx Homes and its directors indemnified from all such events.
+
+		<br>
+		<br>
+
+		12.2. The Owner further undertakes that all dues including but not limited to government fees & dues towards local authorities & apartment societies shall be paid by Owner during the Term of the Agreement.
+
+		<br>
+		<br>
+
+		12.3. The Owner further undertakes that the Scheduled Property is free from any default, foreclosure, contract for sale, option to purchase, contract for deed or any other obligation which would be in conflict with the intention of this agreement.
+
+		<br>
+		<br>
+
+		12.4. The Owner further undertakes that all maintenance, electricity, telephone and water charges & dues towards govt. agencies & apartment societies that would have arisen with respect to the said Schedule Premises prior to the commencement of this agreement has been paid. Halanx Homes reserves the right to deduct such payments from payable towards the owner in case it pays such amount on behalf of the owner.
+
+		<br>
+		<br>
+
+		12.5. Halanx Homes undertakes that it has all legal permissions to enter into this Agreement & shall indemnify the owner should there be judicial putes regarding validity of this Agreement.
+	</p>
+
+
+	<h4 style="text-align: left;color: red">13. LIMITATION OF LIABILITY</h4>
+	<p>
+		13.1. The liability of Halanx Homes with regard to this agreement executed hereunder will in no event exceed the amount paid by Halanx Homes to the Owner for the preceding three (3) months.
+		<br>
+		<br>
+		13.2. In no event will Halanx Homes be liable for incidental, special, indirect or consequential damages (including lost profits) or costs of procurement of substitute goods or services, however caused and under any theory of liability, including but not limited to contract (including products' liability, strict liability and negligence) and whether or not Halanx Homes was or should have been aware or advised of the possibility of such damage and notwithstanding the failure of essential purpose of any limited remedy stated herein.
+	</p>
+
+	<h4 style="text-align: left;color: red">14. DISPUTE RESOLUTION</h4>
+	<p>
+		In case of any dispute between both the Parties, arising out or in relation to this Agreement shall be referred for the arbitration to be conducted by a sole arbitrator to be nominated after mutual consultation of the Parties herein. The award passed by such arbitrator shall be final and binding on both the Parties. The arbitration proceedings shall be governed by the provisions of Arbitration and Conciliation Act, 1996. The arbitration shall be held in English language only and the seat of Arbitration shall be in Delhi. The dispute shall be governed in accordance with laws of India.
+	</p>
+
+	<h4 style="text-align: left;color: red">15. CONFLICT</h4>
+	<p>
+		In the event of conflict between the terms of Annexures & this Agreement, the former shall prevail.
+	</p>
+
+	<h4 style="text-align: left;color: red">16. SEVERABILITY</h4>
+	<p>
+		If the court of law finds any provision or clause of this Agreement to be invalid or void in full part or in part, the remainder of this Agreement shall continue to be valid, enforceable and effective.
+	</p>
+
+	<h4 style="text-align: left;color: red">17. COUNTERPARTS</h4>
+	<p>
+		This Agreement shall be executed simultaneously in two counterparts, each of which shall be deemed as original and shall constitute as one and the same instrument.
+	</p>
+
+	<br>
+	<br>
+
+	<p>IN WITNESS WHEREOF, the Parties hereto have set and subscribed their respective hands and seal to this writing on the day, month and year first mentioned herein above.</p>
+
+
+	<table>
+		<tr>
+			<td>
+				<p>
+					<b>Halanx Technologies Pvt. Ltd</b>
+					<br><br><br>
+					through its Authorized Signatory pursuant to the powers and authorities conferred upon him / a power of attorney granted to him by the Board of Directors of the Company vide their resolution dated September 25, 2015
+				</p>
+			</td>
+
+			<td>
+				<p>
+					<b>Owner</b><br>{{ owner.name }}<br><br>
+					{{ owner.correspondant_relation }} {{ owner.correspondant_name }}<br>
+					Permanent Address: {{ owner.address }}
+				</p>
+			</td>
+		</tr>
+
+		<tr>
+			<td>
+				<p>
+					<b>Witness</b><br><br>
+					Name:<br>
+					Address:
+				</p>
+			</td>
+
+			<td>
+				<p>
+					<b>Witness</b><br><br>
+					Name:<br>
+					Address:
+				</p>
+			</td>
+
+		</tr>
+	</table>
+
+	<div style="page-break-before: always;"></div>
+
+	<h5>ANNEXURE A</h5>
+
+	<h5 style="text-align: left";>SCOPE OF SERVICES</h5>
+
+	<p>The scope of Halanx Homes Services is as follows:</p>
+
+	<ol type="1">
+		<li><b>Licensing of Scheduled Property</b>
+			<ol type="i">
+				<li>Advertise, list, market & promote the Scheduled Property</li>
+				<li>Answer enquiries about vacancy</li>
+				<li>Show vacant units/beds</li>
+				<li>Accept Leave & License Applications & Documents</li>
+				<li>Sending them to owner for verification & screening</li>
+				<li>Accept initial License Fee & deposit on behalf of Owner</li>
+				<li>Assist in Licensee move-in</li>
+				<li>Inspect Scheduled Property and prepare report when Licensee moves-in</li>
+				<li>Inspect Scheduled Property and prepare report when Licensee moves-out</li>
+			</ol>
+		</li>
+
+		<li><b>Agreements</b>
+			<ol type="i">
+				<li>Prepare & execute Leave and License agreement with Licensee(s) on behalf of owner</li>
+				<li>Affix stamp papers</li>
+				<li>Get Licensee(s) signature in it</li>
+				<li>Online storage of agreement</li>
+			</ol>
+		</li>
+
+		<li><b>License Collection</b>
+			<ol type="i">
+				<li>Collect License Fee when due</li>
+				<li>Maintain License Fee collection record</li>
+				<li>Serve late License Fee & License Fee increase notice to Licensee(s)</li>
+				<li>Transfer & deposit of License Fee to Owner's account</li>
+			</ol>
+		</li>
+
+		<li><b>Repair & Notices from Licensees</b>
+			<ol type="i">
+				<li>Accept Licensee complaints & repair requests</li>
+				<li>Accept Licensee notices</li>
+				<li>Inform owner of maintenance & repair needs</li>
+				<li>Maintain log of Licensee complaints</li>
+				<li>Organize a list of verified vendors for maintenance</li>
+				<li>Repair payment facilitation on behalf of the owner</li>
+				<li>Collect repair feedback & send it to Owner online</li>
+				<li>Serve Leave and License termination & eviction notice to Licensee</li>
+			</ol>
+		</li>
+	</ol>
+
+	<div style="page-break-before: always;"></div>
+
+	<h5>ANNEXURE B</h5>
+
+	<h5 style="text-align: left;">ADDRESS OF SCHEDULED PROPERTY</h5>
+
+	<p>Location : {{ house.address.complete_address }}</p>
+
+	<p>Contact Person : {{ owner.name }}</p>
+
+	<p>Email : {{ owner.user.email }}</p>
+
+	<p>Phone : {{ owner.phone_no }}</p>
+
+	<p>Parking available :</p>
+
+	<p>For two wheelers: <u>{% if house.two_wheeler_parking_available %}Yes{%  else %}No{%  endif %}</u> For four wheelers: <u>{% if house.four_wheeler_parking_available %}Yes{%  else %}No{%  endif %}</u> in the allotted area only</p>
+
+	<h5 style="text-align: left;">FITTINGS & FURNISHING</h5>
+
+	<table>
+		<tr>
+			<td>
+				<p><b>Room/Space</b></p>
+			</td>
+			<td>
+				<p><b>Provided by Owner</b></p>
+			</td>
+		</tr>
+
+        {% for category, facilities in existing_facilities.items %}
+		<tr>
+			<td>
+				<p><b>{{ category }}</b></p>
+			</td>
+			<td>
+				<p>{{ facilities }}</p>
+			</td>
+		</tr>
+        {% endfor %}
+	</table>
+
+	<br>
+
+	<p>The owner is expected to save original invoices of items along with the warranty cards wherever present for claim settlement.</p>
+
+	<div style="page-break-before: always;"></div>
+
+	<h5>ANNEXURE C</h5>
+
+	<p>The tentative License Fees for different rooms are as under:</p>
+		<ul>
+			<li>Room 1</li>
+			<li>Room 2</li>
+			<li>Room 3</li>
+			<li>Room 4</li>
+		</ul>
+
+	<p>
+		<b>Above License Fees is a tentative figure, Negotiation in rent can be mutually discussed.</b>
+		<br>
+		The Owner shall be able to change rent of any of the Room(s) at his discretion after this agreement signature.
+		<br>
+		This License Fee shall include monthly maintenance charges and any other charges that the Owner is obligated to pay as levied by the society or govt. bodies irrespective of the property being licensed or not. It shall not include water, main electricity, DTH, Internet bills etc, which shall be borne by Licensee separately on per-use basis.
+		<br>
+		<br>
+		<b>Details of Owners required for execution of Agreement</b>
+		<ol type="1">
+			<li>First page of registry/sale deed/ power of attorney/ or any other document confirming ownership of the property.</li>
+			<li>Copy of cancelled cheque of the bank account in which funds transfer has to be done 0</li>
+			<li>PAN Card Copy of the Owner</li>
+		</ol>
+	</p>
+
+	<div style="page-break-before: always;"></div>
+
+	<h5>Authorization Letter for License Fee Related Payment Collection</h5>
+
+	<p style="text-align: center;">TO WHOMSOEVER IT MAY CONCERN</p>
+
+	<br>
+
+    <p>I, the undersigned, am using services of Halanx Technologies Pvt Ltd, a private limited company registered under the Companies Act, 2013 having its registered office at A8/8, Second Floor, Sector 17, Rohini, Delhi 110085 (hereafter referred as "Halanx Homes") to lease my property located at <u>{{ house.address.complete_address }}</u> since <u>{{ house.agreement_commencement_date | date:'d M, Y' }}</u>.
+	</p>
+
+	<p>I hereby grant full power & authority to Halanx Homes & its representatives to collect any payment related to leasing of my property including security deposit, monthly rent, utility payments, maintenance charges, govt. levied dues, if any on my behalf. Any such actions shall be deemed ratified & approved by me.
+	</p>
+
+	<p>In case you need to contact me for any clarification or verification regarding this, please reach out to me at the following address.
+	</p>
+	<br>
+	<p>Thanking you.</p>
+	<br>
+	<p>Sincerely</p>
+	<br>
+	<p>
+		{{ owner.name }}
+		<br>
+		{{ owner.address }}
+		<br>
+		Email: {{ owner.user.email }}
+	</p>
+
+	<div style="page-break-before: always;"></div>
+
+	<h5>Authorization Letter for Furnishing of Scheduled Property</h5>
+
+	<p>
+        I, the undersigned, am using services of Halanx Technologies Pvt Ltd, a private limited company registered under the Companies Act, 2013 having its registered office at A8/8, Second Floor, Sector 17, Rohini 110085 (hereafter referred as "Halanx Homes") to lease my property located at <u>{{ house.address.complete_address }}</u> since <u>{{ house.agreement_commencement_date | date:'d M, Y' }}</u>.
+	</p>
+	<p>
+		I hereby grant full power & authority to Halanx Homes & its representatives to furnish my property as per the requirement under the service agreement on my behalf.
+	</p>
+	<p>
+		In case you need to contact me for any clarification or verification regarding this,please reach out to me at the following address.
+	</p>
+	<br>
+	<p>Thanking you.</p>
+	<br>
+	<p>Sincerely</p>
+	<br>
+	<p>
+		{{ owner.name }}
+		<br>
+		{{ owner.address }}
+		<br>
+		Email: {{ owner.user.email }}
+	</p>
+
+	<div style="page-break-before: always;"></div>
+
+	<h5>ANNEXURE D</h5>
+
+	<h5 style="text-align: left;">RECURRING LICENSE FEE DEPOSIT AND REMAINING SECURITY ADVANCE</h5>
+
+	<table>
+		<tr>
+			<td>
+				<p>Account Holder Name</p>
+			</td>
+			<td>
+				<p>{{ owner.bank_detail.account_holder_name | default_if_none:"" }}</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p>Account Number</p>
+			</td>
+			<td>
+				<p>{{ owner.bank_detail.account_number | default_if_none:"" }}</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p>Bank Name</p>
+			</td>
+			<td>
+				<p>{{ owner.bank_detail.bank_name | default_if_none:"" }}</p>
+			</td>
+		</tr><tr>
+			<td>
+				<p>Bank IFSC Code</p>
+			</td>
+			<td>
+				<p>{{ owner.bank_detail.ifsc_code | default_if_none:"" }}</p>
+			</td>
+		</tr>
+	</table>
+
+	<p>
+		I hereby authorize Halanx Homes to deposit monthly license fee to the bank account specified above and all dues payable by Halanx Homes to me shall be deemed as settled if paid to the bank account specified in table above, by first paying in Halanx virtual wallet, and then to my bank account whenever I request. I further confirm that the said amount of License Fee and security deposit is in lieu of the Scheduled Property offered on leave and license by me to the Licensees.
+	</p>
+
+	<p>
+		In view of the above, I shall indemnify and hold harmless Halanx Homes, its directors, employees, agents or contractors and licensee staying in the above mentioned Scheduled Property against all claims, demands, lawsuits, obligations, controversies, debt, damage losses and liabilities of whatever kind as a result of depositing monthly License Fee amount specified hereinabove.
+	</p>
+	<br>
+	<p>Owner's Signature</p>
+	<br>
+	<p>
+		Name: {{ owner.name }}
+		<br>
+		Permanent Address: {{ owner.address }}
+	</p>
+	<br>
+	<p>Email: {{ owner.user.email }}</p>
+
+
+</body>
+</html>

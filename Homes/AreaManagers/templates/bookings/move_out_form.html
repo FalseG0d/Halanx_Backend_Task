@@ -1,0 +1,187 @@
+{% extends 'area_manager_base.html' %}
+
+
+{% block title %}
+Move-Out Details
+{% endblock %}
+
+
+{% block heading %}
+Move-Out Details
+{% endblock %}
+
+
+{% block main %}
+    <div>
+        <h3 style="color: red">{{ msg }}</h3>
+    </div>
+
+    {% if booking %}
+    <div>
+        <h2>Booking Details</h2>
+        <table class="border" border="1">
+            <tr>
+                <td><b>Booking Id</b></td>
+                <td>{{ booking.id }}</td>
+            </tr>
+            <tr>
+                <td><b>House</b></td>
+                <td>{{ house.name }}, {{ house.address }}</td>
+            </tr>
+            <tr>
+                <td><b>Space</b></td>
+                <td>{{ space.name }} ({{ space.type }})</td>
+            </tr>
+            <tr>
+                <td><b>License Start Date</b></td>
+                <td>{{ booking.license_start_date }}</td>
+            </tr>
+            <tr>
+                <td><b>License End Date</b></td>
+                <td>{{ booking.license_end_date }}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div style="overflow-x: auto;">
+        <h2>Pending Payments</h2>
+        {% if payments|length %}
+        <table class="border" border="1">
+            <thead>
+                <th>Payment Id</th>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Due Date</th>
+            </thead>
+            <tbody>
+                {% for payment in payments %}
+                <tr>
+                    <td>{{ payment.id }}</td>
+                    <td>{{ payment.description }}</td>
+                    <td>{{ payment.amount }}</td>
+                    <td>{{ payment.due_date }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div>
+            <b style="color: green;">No pending payments!</b>
+        </div>
+        {% endif %}
+    </div>
+
+    <div>
+        <form id="move_out_form" action="{% url 'move_out_confirm_view' booking.id %}" method="post">
+            {% csrf_token %}
+            <div style="overflow-x: auto;">
+                <h3>Sub-Unit facility items</h3>
+                <table>
+                    <thead>
+                        <th></th>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Remark</th>
+                        <th>Status</th>
+                    </thead>
+                    <tbody id="sub_unit_facility_items">
+                        {% for facility in sub_unit_facilities %}
+                        <tr>
+                            <td><button type="button" class="btn btn-blue"><input type="checkbox" name="checked" title="checked"></button></td>
+                            <td>{{ facility.item.name }}
+                                <input type="hidden" value="{{ facility.id }}" name="item">
+                            </td>
+                            <td>{{ facility.quantity }}</td>
+                            <td><input type="text" name="remark" value="{{ facility.remark }}"></td>
+                            <td>
+                                <select name="status">
+                                    <option value="Returned" selected>Returned</option>
+                                    <option value="Lost" {% if facility.status == 'Lost' %}selected{% endif %}>Lost</option>
+                                    <option value="Damaged" {% if facility.status == 'Damaged' %}selected{% endif %}>Damaged</option>
+                                </select>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="overflow-x: auto;">
+                <h3>Common-Area facility items</h3>
+                <table>
+                    <thead>
+                        <th></th>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Remark</th>
+                        <th>Status</th>
+                    </thead>
+                    <tbody id="common_area_facility_items">
+                        {% for facility in common_area_facilities %}
+                        <tr>
+                            <td><button type="button" class="btn btn-blue"><input type="checkbox" name="checked"></button></td>
+                            <td>{{ facility.item.name }}
+                                <input type="hidden" value="{{ facility.id }}" name="item">
+                            </td>
+                            <td>{{ facility.quantity }}</td>
+                            <td><input type="text" name="remark" value="{{ facility.remark }}"></td>
+                            <td>
+                                <select name="status">
+                                    <option value="Returned" selected>Returned</option>
+                                    <option value="Lost" {% if facility.status == 'Lost' %}selected{% endif %}>Lost</option>
+                                    <option value="Damaged" {% if facility.status == 'Damaged' %}selected{% endif %}>Damaged</option>
+                                </select>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div>
+                <h3>Company Notes</h3>
+                <div>{{ booking.move_out_notes | default_if_none:"" }}</div>
+            </div>
+
+            <div>
+                <h3>Area Manager Notes</h3>
+                <label>
+                    <textarea name="area_manager_notes">{{ booking.area_manager_notes | default_if_none:"" }}</textarea>
+                </label>
+            </div>
+            <br>
+
+            <div>
+                <button type="submit" class="btn btn-red" id="confirm">Confirm</button>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+{% endblock %}
+
+
+{% block script %}
+<script>
+    $(document).ready(
+        $('#move_out_form').submit(function(e) {
+            e.preventDefault();
+            if($("input[name=checked]:checked").length !== {{ sub_unit_facilities | length}} + {{ common_area_facilities | length }}) {
+                alert("Check all facility items to proceed.");
+                return false;
+            }
+            let form = $(this);
+            let url = form.attr('action');
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: form.serialize(),
+                success: function (data) {
+                    alert("Successfully saved the booking details!");
+                    $('#confirm').remove();
+                }
+            });
+        })
+    )
+</script>
+{% endblock %}

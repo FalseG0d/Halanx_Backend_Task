@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+{% load tags %}
+<head>
+    <title>Customer Analytics</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{% static "js/csrf.js" %}"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ gmapkey }}&libraries=places"></script>
+
+
+    <link rel="shortcut icon" type="image/png" href="{% static "img/favicon.ico" %}">
+    <link rel="stylesheet" href="{% static "css/sample.css" %}">
+</head>
+
+<body>
+    <div class="container">
+        <form>
+            <label>Location</label>
+            <input id="searchTextField" type="text" size="50" placeholder="Enter a location" autocomplete="on" />
+            <input type="hidden" id="lat" name="lat" />
+            <input type="hidden" id="lng" name="lng" />
+            <label>Radius</label>
+            <input type="text" name="radius">
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </form>
+    </div>
+
+    <div class="container">
+        <h3>Send Notification</h3>
+        <div class="container" id="notification">
+            <label>Title</label>
+            <input type="text" id="notification-title" name="title">
+            <br>
+            <label>Content</label>
+            <textarea id="notification-content" name="content"></textarea>
+            <button type="button" id="notification-button">Send</button>
+            <label>Send to all</label>
+            <input type="checkbox" id="notification-select-all">
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            {{ customer_ids | length }} users
+        </div>
+        <div class="row">
+            <table border="1" id="customers-table">
+                <thead>
+                    <th><input type="checkbox" id="select-all"></th>
+                    <th>Name</th>
+                    <th>Phone Number</th>
+                </thead>
+                <tbody>
+                {% for customer in customers %}
+                    <tr class="customer-row" data-id="{{ customer.id }}">
+                        <td><input type="checkbox" class="select-customer"></td>
+                        <td><img height=50px width=50px src="{{ customer.pic }}">&nbsp;&nbsp;{{ customer.name }}</td>
+                        <td>{{ customer.phone_no }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row">
+            {% if is_paginated %}
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <!-- << PREVIOUS PART -->
+                    <!-- << Disable 'Previous' page button if you are at the 1st page -->
+                    {% if not customers.has_previous %}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-label="Previous">
+
+                    <!-- << If you are at the 2nd page,
+                    'Previous' page button will get '/profiles/' url instead of '/profiles/?page=1' -->
+                    {% elif customers.previous_page_number == 1 %}
+                        <li class="page-item">
+                            <a class="page-link" href="/users/analytics/" aria-label="Previous">
+
+                    {% else %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ customers.previous_page_number }}" aria-label="Previous">
+                    {% endif %}
+
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+
+                    <!-- PAGES PART -->
+                    {% for num in customers.paginator.page_range %}
+                        <!-- Active page -->
+                        {% if num == customers.number %}
+                            <li class="page-item active">
+                                <a class="page-link" href="#">{{ num }}<span class="sr-only">(current)</span></a>
+                            </li>
+
+                        {% else %}
+                            <li class="page-item">
+                                <!-- For the 1st page we do not use ?page=1 -->
+                                {% if num == 1 %}
+                                    <a class="page-link" href="/users/analytics/">{{ num }}</a>
+
+                                {% else %}
+                                    <!-- Show current page and +-3 pages -->
+                                    {% if num|add:"-3" <= customers.number and customers.number <= num|add:"3" %}
+                                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+
+                                    <!-- Shows every 10th page and the last page -->
+                                    {% elif num|divisibleby:"10" or num == customers.paginator.num_pages %}
+                                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                    {% endif %}
+
+                                {% endif %}
+                            </li>
+                        {% endif %}
+
+                    {% endfor %}
+
+                    <!-- >> NEXT PART -->
+                    {% if not customers.has_next %}
+                        <!-- << Disable 'Next' page button if you are at the last page -->
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-label="Next">
+
+                    {% else %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ customers.next_page_number }}" aria-label="Next">
+                    {% endif %}
+
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+
+                </ul>
+            </nav>
+            {% endif %}
+        </div>
+    </div>
+</body>
+
+<script>
+    function initialize() {
+        let input = document.getElementById('searchTextField');
+        let autocomplete = new google.maps.places.Autocomplete(input);
+        google.maps.event.addListener(autocomplete, 'place_changed', function () {
+            let place = autocomplete.getPlace();
+            document.getElementById('lat').value = place.geometry.location.lat();
+            document.getElementById('lng').value = place.geometry.location.lng();
+        });
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+    $(document).on("keypress", "form", function(event) {
+        return event.keyCode !== 13;
+    });
+
+    // noinspection JSAnnotator
+    const all_customer_ids = {{ customer_ids | safe }};
+
+    $('#select-all').click(function (event) {
+        if (this.checked) {
+            $('.select-customer:checkbox').prop('checked', true);
+        } else {
+            $('.select-customer:checkbox').prop('checked', false);
+        }
+    });
+
+    $('#notification-button').click(function (event) {
+        let customer_ids;
+        if($('#notification-select-all').prop('checked') === true) {
+            customer_ids = all_customer_ids;
+        } else {
+            customer_ids = [];
+            $('.customer-row').each(function() {
+                if($(this).find('td:first-child').find('input:first-child').prop('checked') === true) {
+                    customer_ids.push(parseInt($(this).attr('data-id')));
+                }
+            });
+        }
+
+        alert(customer_ids);
+
+        let data = {};
+        data['title'] = $('#notification-title').val();
+        data['content'] = $('#notification-content').val();
+        data['customer_ids'] = JSON.stringify(customer_ids);
+
+        $.ajax({
+            type: 'POST',
+            url: '{% url 'user_analytics_notification' %}',
+            data: data,
+            success: function (data) {
+                alert("Done");
+                console.log(data);
+            }
+        });
+
+    });
+</script>
+</html>

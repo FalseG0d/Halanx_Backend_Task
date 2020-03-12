@@ -1,0 +1,84 @@
+{% extends 'area_manager_base.html' %}
+
+
+{% block title %}
+Cash Collection
+{% endblock %}
+
+
+{% block heading %}
+Cash Collection
+{% endblock %}
+
+
+{% block main %}
+    {% if msg %}
+    <div>
+        <h3 style="color: red">{{ msg }}</h3>
+    </div>
+    {% else %}
+    <div style="overflow-x: auto;">
+        <table class="border" id="cash_collect_table" border="1">
+            <thead>
+                <th>Payment Id</th>
+                <th>Amount</th>
+                <th>Collection Time</th>
+                <th>Tenant Name</th>
+                <th>Tenant Phone No.</th>
+                <th>House</th>
+                <th></th>
+            </thead>
+
+            <tbody>
+                {% for payment in payments %}
+                <tr>
+                    <td>{{ payment.id }}</td>
+                    <td>₹{{ payment.amount }}</td>
+                    <td>{{ payment.transaction.collection_time_start }} - {{ payment.transaction.collection_time_end }}</td>
+                    <td>{{ payment.booking.tenant.customer.name }}</td>
+                    <td>{{ payment.booking.tenant.customer.phone_no }}</td>
+                    <td>
+                        {{ payment.booking.space.house.name }},
+                        <br>
+                        <em>{{ payment.booking.space.house.address }}</em>
+                        <br>
+                        <a href="https://www.google.com/maps/search/?api=1&query={{ payment.booking.space.house.address.coordinates }}"
+                            target="_blank"><i class="fa fa-location-arrow fa-2x" aria-hidden="true" style="color:blue"></i></a>
+                    </td>
+                    <td><button type="button" class="btn btn-blue cash_collect_btn" value="{{ payment.id }}" data-msg="Have you collected ₹{{ payment.amount }} from {{ payment.booking.tenant.customer.name }}?"
+                            data-url="{% url 'cash_collect_confirm_view' payment.id %}">Collect</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+{% endblock %}
+
+
+{% block script %}
+<script>
+    $('.cash_collect_btn').click(function () {
+        if (confirm($(this).attr('data-msg'))) {
+            $(this).prop('disabled', true);
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('data-url'),
+                success: function (data) {
+                    alert(data['detail']);
+                }
+            })
+        }
+    });
+
+    $('#cash_collect_table').DataTable({
+        scrollY: 300,
+        scrollCollapse: true,
+        paging: false,
+        ordering: false,
+        autoWidth: true,
+        responsive: true
+    });
+</script>
+{% endblock %}

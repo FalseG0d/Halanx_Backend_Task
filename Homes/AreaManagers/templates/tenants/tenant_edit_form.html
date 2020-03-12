@@ -1,0 +1,344 @@
+{% extends 'area_manager_base.html' %}
+
+
+{% block title %}
+Tenant Profile Edit
+{% endblock %}
+
+
+{% block heading %}
+Tenant Profile Edit
+{% endblock %}
+
+
+{% block main %}
+
+   <div>
+        <h3 style="color: red">{{ msg }}</h3>
+   </div>
+
+    <!-- tenant exists -->
+    {% if tenant %}
+    <div class="container">
+        <form class="form-horizontal" id="tenant_profile_edit_form"
+              action="{% url 'tenant_profile_edit_view' tenant.id %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-3 col-sm-offset-3">
+                        <h3>Basic Details</h3>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="control-label col-sm-3">First Name</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="first_name" value="{{ tenant.customer.user.first_name }}">
+                    </div>
+
+                    <label class="control-label col-sm-2">Last Name</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="last_name" value="{{ tenant.customer.user.last_name }}">
+                    </div>
+                </div>
+
+                <div class="row" style="padding: 10px;">
+                    <label class="control-label col-sm-3">Email</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="email" value="{{ tenant.customer.user.email }}">
+                    </div>
+
+                    <label class="control-label col-sm-2">Date of Birth</label>
+                    <div class="col-sm-2">
+                        <input type="date" name="dob" value="{{ tenant.customer.dob|date:"Y-m-d" }}">
+                    </div>
+                </div>
+
+                <div class="row" style="padding: 10px;">
+                    <label class="control-label col-sm-3">Parent Name</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="parent_name" value="{{ tenant.parent_name }}">
+                    </div>
+
+                    <label class="control-label col-sm-2">Parent Phone No.</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="parent_phone_no" value="{{ tenant.parent_phone_no }}">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-3 col-sm-offset-3">
+                        <h3>Permanent Address</h3>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="control-label col-sm-3">Street Address</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="permanent_street_address" value="{{ tenant.permanent_address.street_address }}">
+                    </div>
+                    <label class="control-label col-sm-2">City</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="permanent_city" value="{{ tenant.permanent_address.city }}">
+                    </div>
+                </div>
+
+                <div class="row" style="padding: 10px;">
+                    <label class="control-label col-sm-3">State</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="permanent_state" value="{{ tenant.permanent_address.state }}">
+                    </div>
+
+                    <label class="control-label col-sm-2">Pin Code</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="permanent_pincode" value="{{ tenant.permanent_address.pincode }}">
+                    </div>
+                </div>
+
+                <div class="row" style="padding: 10px;">
+                    <label class="control-label col-sm-3">Country</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="permanent_country" value="{{ tenant.permanent_address.country }}">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-3 col-sm-offset-3">
+                        <h3>Emergency Contact</h3>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="control-label col-sm-3">Name</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="emergency_contact_name" value="{{ tenant.emergency_contact_name }}">
+                    </div>
+                    <label class="control-label col-sm-2">Relation</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="emergency_contact_relation" value="{{ tenant.emergency_contact_relation }}">
+                    </div>
+                </div>
+
+                <div class="row" style="padding: 10px;">
+                    <label class="control-label col-sm-3">Email</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="emergency_contact_email" value="{{ tenant.emergency_contact_email }}">
+                    </div>
+
+                    <label class="control-label col-sm-2">Phone No.</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="emergency_contact_phone_no" value="{{ tenant.emergency_contact_phone_no }}">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-3 col-sm-offset-3">
+                        <h3>Employer Details</h3>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="control-label col-sm-3">Job Position</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="job_position" value="{{ tenant.job_position }}">
+                    </div>
+                    <label class="control-label col-sm-2">Company Name</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="company_name" value="{{ tenant.company_name }}">
+                    </div>
+                </div>
+
+                <div class="row" style="padding: 10px;">
+                    <label class="control-label col-sm-3">Company Email</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="company_email" value="{{ tenant.company_email }}">
+                    </div>
+
+                    <label class="control-label col-sm-2">Company Phone No.</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="company_phone_no" value="{{ tenant.company_phone_no }}">
+                    </div>
+                </div>
+
+                <div class="row" style="padding: 10px;">
+                    <label class="control-label col-sm-3">Company Joining Date</label>
+                    <div class="col-sm-2">
+                        <input type="date" name="company_joining_date" value="{{ tenant.company_joining_date|date:"Y-m-d" }}">
+                    </div>
+
+                    <label class="control-label col-sm-2">Company Leaving Date</label>
+                    <div class="col-sm-2">
+                        <input type="date" name="company_leaving_date" value="{{ tenant.company_leaving_date|date:"Y-m-d" }}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-3 col-sm-offset-3">
+                        <h3>Company Address</h3>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="control-label col-sm-3">Street Address</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="company_street_address" value="{{ tenant.company_address.street_address }}">
+                    </div>
+                    <label class="control-label col-sm-2">City</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="company_city" value="{{ tenant.company_address.city }}">
+                    </div>
+                </div>
+
+                <div class="row" style="padding: 10px;">
+                    <label class="control-label col-sm-3">State</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="company_state" value="{{ tenant.company_address.state }}">
+                    </div>
+
+                    <label class="control-label col-sm-2">Pin Code</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="company_pincode" value="{{ tenant.company_address.pincode }}">
+                    </div>
+                </div>
+
+                <div class="row" style="padding: 10px;">
+                    <label class="control-label col-sm-3">Country</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="company_country" value="{{ tenant.company_address.country }}">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-3 col-sm-offset-3">
+                        <h3>Bank Details</h3>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <label class="control-label col-sm-3">Account Holder Name</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="account_holder_name" value="{{ tenant.bank_detail.account_holder_name }}">
+                    </div>
+                    <label class="control-label col-sm-2">Account Number</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="account_number" value="{{ tenant.bank_detail.account_number }}">
+                    </div>
+                </div>
+
+                <div class="row" style="padding: 10px;">
+                    <label class="control-label col-sm-3">Account Type</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="account_type" value="{{ tenant.bank_detail.account_type }}">
+                    </div>
+
+                    <label class="control-label col-sm-2">Bank Name</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="bank_name" value="{{ tenant.bank_detail.bank_name }}">
+                    </div>
+                </div>
+
+                <div class="row" style="padding: 10px;">
+                    <label class="control-label col-sm-3">Bank Branch</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="bank_branch" value="{{ tenant.bank_detail.bank_branch }}">
+                    </div>
+
+                    <label class="control-label col-sm-2">Bank Branch Address</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="bank_branch_address" value="{{ tenant.bank_detail.bank_branch_address }}">
+                    </div>
+                </div>
+
+                 <div class="row" style="padding: 10px;">
+                    <label class="control-label col-sm-3">IFSC Code</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="ifsc_code" value="{{ tenant.bank_detail.ifsc_code }}">
+                    </div>
+                 </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                    <button type="submit" class="btn">Submit</button>
+                </div>
+            </div>
+        </form>
+
+
+        <form class="form-horizontal" method="post" action="{% url 'tenant_profile_edit_view' tenant.id %}?type=media" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-3 col-sm-offset-3">
+                        <h3>Media Uploads</h3>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="control-label col-sm-3">Profile Pic</label>
+                    <div class="col-sm-3">
+                        <input type="file" name="profile_pic" accept="image/*" />
+                    </div>
+                    <label class="control-label col-sm-1">Id</label>
+                    <div class="col-sm-3">
+                        <input type="file" name="document" accept="image/*" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-3 col-sm-offset-3">
+                        <img src="{{ tenant.customer.profile_pic_url }}" height="100" width="100">
+                    </div>
+                    <div class="col-sm-3 col-sm-offset-1">
+                        <img src="{{ document }}" height="100" width="100">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                    <button type="submit" class="btn">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+{% endblock %}
+
+
+{% block script %}
+<script>
+    $('#tenant_profile_edit_form').submit(function (e) {
+        e.preventDefault();
+        let form = $(this);
+        let url = form.attr('action');
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: form.serialize(),
+            success: function (data) {
+                    alert("Saved details!");
+                    location.reload();
+                }
+        });
+    });
+</script>
+{% endblock %}

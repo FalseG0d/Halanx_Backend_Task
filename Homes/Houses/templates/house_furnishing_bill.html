@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Invoice #{{ bill.id }}</title>
+    <style>
+        table td {
+            /* border: 1px solid red; */
+        }
+
+        body {
+            font-size: 15px;
+        }
+
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body style="font-family: Arial, Helvetica, sans-serif; color: #333;">
+    <table width="600px">
+        <tr>
+            <td style="padding: 2px;">
+                <table width=100%>
+                    <tr>
+                        <td width="5%">
+                            <img src="https://halanxhomes.com/img/logo.png" style="padding:10px; padding-left: 0;"
+                                width="40" alt="">
+                        </td>
+                        <td width="60%" style="padding-top: 10px;">
+                            <h1 style="color: #e52222;">Halanx</h1>
+                        </td>
+                        <td width="35%">
+                            <table width="100%" style="text-align: right;">
+                                <tr>
+                                    <td style="color: #777;">{{ bill.timestamp }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Invoice</strong> #{{ bill.id }}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 2px;">
+                <table width="100%">
+                    <thead style="font-weight: bold;">
+                        <tr>
+                            <td width="50%">Billed by</td>
+                            <td width="50%">Billed to</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td width="50%">Halanx Technologies Pvt Ltd</td>
+                            <td width="50%">{{ owner.name }}</td>
+                        </tr>
+                        <tr>
+                            <td width="50%">FF-33, Pearls Omaxe Tower, Netaji Subhash Place, Delhi 34</td>
+                            <td width="50%">{{ owner.address }}</td>
+                        </tr>
+                        <tr>
+                            <td width="50%">GSTIN: 07AAECH1696L1Z6</td>
+                            <td width="50%">GSTIN: {{ owner.gstin }}</td>
+                        </tr>
+                        <tr>
+                            <td width="50%">+91 85277 94373</td>
+                            <td width="50%">{{ owner.phone_no }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <br>
+            <br>
+            <td style="padding: 2px;">
+                <table border="1" style="border-collapse: collapse;" width="100%">
+                    <thead style="font-weight: bold;">
+                        <tr>
+                            <td style="padding: 2px;" width="70%">Description</td>
+                            <td style="padding: 2px;" width="30%">Price</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in items %}
+                        <tr>
+                            <td style="padding: 2px;" width="70%">{{ item.description }}</td>
+                            <td style="padding: 2px;" width="30%">{{ item.price }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <table width="100%" style="border-collapse: collapse;">
+                    <tr>
+                        <td style="text-align:right;" width="70%">Subtotal</td>
+                        <td style="padding: 2px;" width="30%">{{ bill.subtotal }}</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;" width="70%">GST</td>
+                        <td style="padding: 2px;" width="30%">{{ bill.gst }}</td>
+                    </tr>
+                    <tr>
+                        <td style="border-top: 2px dashed #333; border-bottom: 2px dashed #333; text-align:right; padding: 2px; padding-right: 14px;"
+                            width="70%"><strong>Total</strong></td>
+                        <td style="border-top: 2px dashed #333; border-bottom: 2px dashed #333; padding: 2px;" width="30%"><strong>{{ bill.total }}</strong></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 2px;">
+                <br>
+                <br>
+                <p>Payment should be done in the following bank account.</p>
+                <table width="100%">
+                    <tr>
+                        <td>Beneficiary Name <strong>:</strong></td>
+                        <td>HALANX TECHNOLOGIES PRIVATE LIMITED</td>
+                    </tr>
+                    <tr>
+                        <td>Account Number <strong>:</strong></td>
+                        <td>036705501168</td>
+                    </tr>
+                    <tr>
+                        <td>IFSC Code <strong>:</strong></td>
+                        <td>ICIC0000367</td>
+                    </tr>
+                    <tr>
+                        <td>Bank Name & Branch <strong>:</strong></td>
+                        <td>ICICI Bank, Sector 11, Rohini - 110085</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <div class="footer">
+        <p style="font-size: 12px; color: #777;">
+            33, First Floor, Pearls Omaxe Corporate Tower, Netaji
+            Subhash Place, Delhi 110034
+        </p>
+        <p>
+            <strong style="font-size: 18px">&copy; Halanx, 2019</strong>
+        </p>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,145 @@
+{% extends 'area_manager_base.html' %}
+
+
+{% block title %}
+Tenant Payments
+{% endblock %}
+
+
+{% block heading %}
+Tenant Payments
+{% endblock %}
+
+
+{% block main %}
+
+    <div>
+        <h3 style="color: red">{{ msg }}</h3>
+    </div>
+
+    {% if payments %}
+    <div class="container">
+        <table class="border" border="1">
+            <thead>
+                <th>Id</th>
+                <th>Type</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Due date</th>
+                <th>Paid On</th>
+                {% if request.user.is_staff %}
+                <th>Edit</th>
+                {% endif %}
+            </thead>
+
+            <tbody>
+                {% for payment in payments %}
+                <tr>
+                    <td>{{ payment.id }}</td>
+                    <td>{{ payment.get_type_display }}</td>
+                    <td>{{ payment.category }}</td>
+                    <td>&#8377;{{ payment.amount }}</td>
+                    <td>{{ payment.description }}</td>
+                    <td>{{ payment.get_status_display }}</td>
+                    <td>{{ payment.due_date }}</td>
+                    <td>{{ payment.paid_on }}</td>
+                    {% if request.user.is_staff %}
+                    <td><button class="btn visibility_toggle" data-container-id="edit-payment-{{ payment.id }}">
+                            <i class="fa fa-edit" aria-hidden="true" style="color: blue;"></i>
+                        </button>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% if request.user.is_staff %}
+                <tr id="edit-payment-{{ payment.id }}" style="display: none; background-color: #999999">
+                    <td colspan="9">
+                        <form class="form-horizontal tenant_payment_edit_form" method="post"
+                              action="{% url 'tenant_payment_edit_view' payment.id %}">
+                            {% csrf_token %}
+                             <div class="form-group">
+                                 <div class="row">
+                                    <label class="control-label col-sm-2">Amount</label>
+                                    <div class="col-sm-2">
+                                        <input type="number" name="amount" value="{{ payment.amount }}">
+                                    </div>
+
+                                     <label class="control-label col-sm-1">Status</label>
+                                     <div class="col-sm-2">
+                                         <select name="status">
+                                            {% with 'Pending Paid Cancelled' as opts %}
+                                                {% for opt in opts.split %}
+                                                    <option value="{{ opt.lower }}" {% if payment.get_status_display == opt %}selected{% endif %}>{{ opt }}</option>
+                                                {% endfor %}
+                                            {% endwith %}
+                                         </select>
+                                    </div>
+
+                                    <label class="control-label col-sm-1">Paid On</label>
+                                    <div class="col-sm-2">
+                                        <input type="date" name="paid_on" value="{{ payment.paid_on|date:'Y-m-d' }}">
+                                    </div>
+                                 </div>
+
+                                <div class="row">
+                                    <label class="control-label col-sm-2">Transaction ID</label>
+                                    <div class="col-sm-2">
+                                        <input type="text" name="transaction_id"
+                                                {% if payment.transaction %}value="{{ payment.transaction.transaction_id }}"{% endif %}>
+                                    </div>
+
+                                    <label class="control-label col-sm-1">Payment Gateway</label>
+                                    <div class="col-sm-2">
+                                        <select name="payment_gateway">
+                                            <option selected value="None">--------------</option>
+                                            {% with 'PayU Paytm NEFT/IMPS Cash' as opts %}
+                                                {% for opt in opts.split %}
+                                                    <option value="{{ opt }}"
+                                                            {% if payment.transaction and payment.transaction.payment_gateway == opt %}selected{% endif %}>
+                                                        {{ opt }}
+                                                    </option>
+                                                {% endfor %}
+                                            {% endwith %}
+                                         </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-3 col-sm-2">
+                                            <button type="submit" class="btn">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+{% endblock %}
+
+
+{% block script %}
+<script>
+    {% if request.user.is_staff %}
+    ajax_form_submit('.tenant_payment_edit_form', {
+        confirmation: "Are you sure you want to edit the payment?",
+        reload_after_submit: true
+    });
+    {% else %}
+    $('table').DataTable({
+        scrollY: 300,
+        scrollCollapse: true,
+        paging: false,
+        ordering: false,
+        autoWidth: true,
+        responsive: true
+    });
+    {% endif %}
+</script>
+{% endblock %}

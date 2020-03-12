@@ -1,0 +1,400 @@
+{% extends 'area_manager_base.html' %}
+{% load tags %}
+
+{% block title %}
+House-Edit Dashboard
+{% endblock %}
+
+
+{% block heading %}
+House-Edit Dashboard
+{% endblock %}
+
+
+{% block main %}
+    <!--suppress ALL -->
+    <div class="container">
+        <form method="POST" action="{{ house_edit_index_url }}">
+            {% csrf_token %}
+            <label style="display: block; padding: 12px 0;">
+                House Id
+            </label>
+            <div class="row">
+                <div class="col-sm-4">
+                    <input type="text" name="house_id" value="{{ house.id }}">
+                </div>
+                <div class="col-sm-2">
+                    <button id="sub_button" class="btn" type="submit">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div>
+        <h3 style="color: red">{{ msg }}</h3>
+    </div>
+
+    {% if house %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-2">
+                <button type="submit" class="btn btn-green btn-block"
+                        onclick="window.open('{% url 'house_bookings_page' house.id %}', '_blank')">Bookings</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>General Details</h2>
+        <table class="border" border="1">
+            <tr>
+                <td><b>Name</b></td>
+                <td>{{ house.name }}</td>
+            </tr>
+            <tr>
+                <td><b>Owner's Name</b></td>
+                <td>{{ house.owner.name }}</td>
+            </tr>
+            <tr>
+                <td><b>House Address</b></td>
+                <td>{{ house.address }}</td>
+            </tr>
+        </table>
+    </div>
+
+    <hr>
+
+    <div class="container">
+        <button class="btn btn-primary visibility_toggle" data-container-id="new_space_create_form_div" data-hide="1">
+            Create new spaces
+        </button>
+
+        <div class="container" id="new_space_create_form_div" style="display: none;">
+            <form class="form-horizontal" id="new_space_create_form" method="post"
+                  action="{% url 'house_spaces_create_view' house.id %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Space Type</label>
+                    <div class="col-sm-2">
+                        <select name="space_type" id="space_type_select" required>
+                            <option disabled selected value> ----------- </option>
+                            {% for type in space_types %}
+                            <option value="{{ type.0 }}" selected>{{ type.1 }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Space SubType</label>
+                    <div class="col-sm-2">
+                        <select name="space_subtype" required>
+                            <option disabled selected value> ----------- </option>
+                            {% for type in space_subtypes %}
+                            <option value="{{ type.id }}" selected>{{ type.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-sm-7">
+                        <a href="/admin/halanxhomes/Houses/spacesubtype/add/" target="_blank">Add New</a>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Bed Count (Shared Room)</label>
+                    <div class="col-sm-2">
+                       <input type="number" name="bed_count" value="2" id="bed_count_select">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Duplicate Count</label>
+                    <div class="col-sm-2">
+                       <input type="number" name="duplicate_count" value="1">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Space Name Prefix</label>
+                    <div class="col-sm-2">
+                       <input type="text" name="space_name_prefix" value="Room No." required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Space Name Initial Count</label>
+                    <div class="col-sm-2">
+                       <input type="number" name="space_name_initial_count" value="1" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-9">
+                        <button type="submit" class="btn">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="container">
+        <h2>Space Details</h2>
+
+        <h3>Shared Rooms</h3>
+        {% if shared_rooms|length == 0 %}
+            <h4>No Shared Rooms</h4>
+        {% else %}
+            <button class="visibility_toggle show_btn" data-container-id="shared_rooms_detail">Show</button>
+        {% endif %}
+        <div class="container" id="shared_rooms_detail" style="display: none;">
+            {% for subtype in shared_room_subtypes %}
+                <h4>{{ subtype.name }}</h4>
+
+                {% with shared_rooms|get_item:subtype.name as shared_rooms %}
+                    {% with shared_rooms.0.space as space %}
+                        <div class="container form-group">
+                            <form class="subtype_spaces_update_form form-inline" method="post"
+                                  action="{% url 'house_subtype_spaces_update_view' house.id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="space_subtype" value="{{ subtype.id }}">
+                                <label>Rent</label>
+                                <input name="rent" type="number" class="form-control input-sm" value="{{ space.rent }}" >
+
+                                <label>Security Deposit</label>
+                                <input name="security_deposit" type="number" class="form-control input-sm" value="{{ space.security_deposit }}">
+
+                                <label>Commission</label>
+                                <input name="commission" type="number" steps="0.001" class="form-control input-sm" value="{{ space.commission }}">
+
+                                <button type="submit" class="btn-sm btn-primary">Update</button>
+                            </form>
+                        </div>
+                    {% endwith %}
+                {% endwith %}
+
+                <table class="shared_rooms_table border" border="1">
+                    <thead>
+                        <th><input type="checkbox"></th>
+                        <th>Space Id</th>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th>Bed Status</th>
+                        <th></th>
+                    </thead>
+
+                    <tbody>
+                        {% for shared_room in shared_rooms|get_item:subtype.name %}
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td><a href="/admin/halanxhomes/Houses/space/{{ shared_room.space.id }}/change/"
+                                   target="_blank">{{ shared_room.space.id }}</a></td>
+                            <td>{{ shared_room.space.name }}</td>
+                            <td>{{ shared_room.space.get_availability_display }}</td>
+                            <td>
+                                {% for bed in shared_room.beds.all %}
+                                    {% if bed.availability == 'available' %}
+                                    <i class="fa fa-bed" aria-hidden="true" style="color: green;"></i>
+                                    {% else %}
+                                    <i class="fa fa-bed" aria-hidden="true" style="color: red;"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>
+                                <button class="btn delete_space_btn" data-space-id="{{ shared_room.space.id }}">
+                                    <i class="fa fa-trash" aria-hidden="true" style="color: red;"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {%  endfor %}
+        </div>
+
+        <h3>Private Rooms</h3>
+        {% if private_rooms|length == 0 %}
+            <h4>No Private Rooms</h4>
+        {% else %}
+            <button class="visibility_toggle show_btn" data-container-id="private_rooms_detail">Show</button>
+        {% endif %}
+        <div class="container" id="private_rooms_detail" style="display: none;">
+            {% for subtype in private_room_subtypes %}
+                <h4>{{ subtype.name }}</h4>
+                {% with private_rooms|get_item:subtype.name as private_rooms %}
+                    {% with private_rooms.0.space as space %}
+                        <div class="container form-group">
+                            <form class="subtype_spaces_update_form form-inline" method="post"
+                                  action="{% url 'house_subtype_spaces_update_view' house.id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="space_subtype" value="{{ subtype.id }}">
+
+                                <label>Rent</label>
+                                <input name="rent" type="number" class="form-control input-sm" value="{{ space.rent }}" >
+
+                                <label>Security Deposit</label>
+                                <input name="security_deposit" type="number" class="form-control input-sm" value="{{ space.security_deposit }}">
+
+                                <label>Commission</label>
+                                <input name="commission" type="number" steps="0.001" class="form-control input-sm" value="{{ space.commission }}">
+
+                                <button type="submit" class="btn-sm btn-primary">Update</button>
+                            </form>
+                        </div>
+                    {% endwith %}
+                {% endwith %}
+
+                <table class="private_rooms_table border" border="1">
+                    <thead>
+                        <th><input type="checkbox"></th>
+                        <th>Space Id</th>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th></th>
+                    </thead>
+
+                    <tbody>
+                        {% for private_room in private_rooms|get_item:subtype.name %}
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td><a href="/admin/halanxhomes/Houses/space/{{ private_room.space.id }}/change/"
+                                   target="_blank">{{ private_room.space.id }}</a></td>
+                            <td>{{ private_room.space.name }}</td>
+                            <td>{{ private_room.space.get_availability_display }}</td>
+                            <td>
+                                <button class="btn delete_space_btn" data-space-id="{{ private_room.space.id }}">
+                                    <i class="fa fa-trash" aria-hidden="true" style="color: red;"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {%  endfor %}
+        </div>
+
+        <h3>Flats</h3>
+        {% if flats|length == 0 %}
+            <h4>No Flats</h4>
+        {% else %}
+            <button class="visibility_toggle show_btn" data-container-id="flats_detail">Show</button>
+        {% endif %}
+        <div class="container" id="flats_detail" style="display: none;">
+            {% for subtype in flat_subtypes %}
+                <h4>{{ subtype.name }}</h4>
+                {% with flats|get_item:subtype.name as flats %}
+                    {% with flats.0.space as space %}
+                        <div class="container form-group">
+                            <form class="subtype_spaces_update_form form-inline" method="post"
+                                  action="{% url 'house_subtype_spaces_update_view' house.id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="space_subtype" value="{{ subtype.id }}">
+
+                                <label>Rent</label>
+                                <input name="rent" type="number" class="form-control input-sm" value="{{ space.rent }}" >
+
+                                <label>Security Deposit</label>
+                                <input name="security_deposit" type="number" class="form-control input-sm" value="{{ space.security_deposit }}">
+
+                                <label>Commission</label>
+                                <input name="commission" type="number" steps="0.001" class="form-control input-sm" value="{{ space.commission }}">
+
+                                <button type="submit" class="btn-sm btn-primary">Update</button>
+                            </form>
+                        </div>
+                    {% endwith %}
+                {% endwith %}
+
+                <table class="flats_table border" border="1">
+                    <thead>
+                        <th><input type="checkbox"></th>
+                        <th>Space Id</th>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th></th>
+                    </thead>
+
+                    <tbody>
+                        {% for flat in flats|get_item:subtype.name %}
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td><a href="/admin/halanxhomes/Houses/space/{{ flat.space.id }}/change/"
+                                   target="_blank">{{ flat.space.id }}</a></td>
+                            <td>{{ flat.space.name }}</td>
+                            <td>{{ flat.space.get_availability_display }}</td>
+                            <td>
+                                <button class="btn delete_space_btn" data-space-id="{{ flat.space.id }}">
+                                    <i class="fa fa-trash" aria-hidden="true" style="color: red;"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {%  endfor %}
+        </div>
+    </div>
+
+    {% endif %}
+
+{% endblock %}
+
+
+{% block script %}
+<script>
+    $(document).ready(function () {
+        ajax_form_submit('#new_space_create_form', {
+            reload_after_submit: true
+        });
+
+        ajax_form_submit('.subtype_spaces_update_form');
+
+        $('#space_type_select').click(function () {
+           if(this.value !== 'shared') {
+               $('#bed_count_select').prop('disabled', true);
+           }
+           else {
+               $('#bed_count_select').prop('disabled', false);
+           }
+        });
+
+        $('.show_btn').click(function () {
+            let ele = $('#'+$(this).attr('data-container-id'));
+            if(ele.css('display') !== 'none') {
+               $(this).html("Hide");
+            }
+            else {
+                $(this).html("Show");
+            }
+        });
+
+        {% if house %}
+        $('.delete_space_btn').click(function () {
+            if (!confirm("Are you sure you want to delete the space?")) {
+                return;
+            }
+
+            let space_id = $(this).attr('data-space-id');
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'house_space_delete_view' house.id %}",
+                data: {
+                    'space_id': space_id
+                },
+                success: function (data) {
+                    alert(data['detail']);
+                    location.reload();
+                },
+                error: function( jqXhr, textStatus, errorThrown ){
+                    console.log(errorThrown);
+                    alert("There was some error in deleting the space");
+                    location.reload();
+                }
+            });
+        });
+        {% endif %}
+    });
+</script>
+{% endblock %}

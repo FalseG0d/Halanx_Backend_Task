@@ -1,0 +1,131 @@
+{% extends 'area_manager_base.html' %}
+
+
+{% block title %}
+Tenant Monthly Rents
+{% endblock %}
+
+
+{% block heading %}
+Tenant Monthly Rents
+{% endblock %}
+
+
+{% block main %}
+
+    <div>
+        <h3 style="color: red">{{ msg }}</h3>
+    </div>
+
+    {% if booking %}
+
+    {% if monthly_rents %}
+    <div class="container">
+        <table class="border" border="1">
+            <thead>
+                <th>Duration</th>
+                <th>Rent</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                <th>Paid On</th>
+                {% if request.user.is_staff %}
+                <th>Delete?</th>
+                {% endif %}
+            </thead>
+
+            <tbody>
+                {% for monthly_rent in monthly_rents %}
+                <tr>
+                    <td>{{ monthly_rent.start_date_str }} - {{ monthly_rent.end_date_str }}</td>
+                    <td>&#8377;{{ monthly_rent.rent }}</td>
+                    <td>{{ monthly_rent.due_date }}</td>
+                    <td>{{ monthly_rent.get_status_display }}</td>
+                    <td>{{ monthly_rent.paid_on }}</td>
+                    {% if request.user.is_staff %}
+                    <td>
+                        <button class="btn delete_monthly_rent_btn" data-monthly-rent-id="{{ monthly_rent.id }}">
+                            <i class="fa fa-trash" aria-hidden="true" style="color: red;"></i>
+                        </button>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+    {% if request.user.is_staff %}
+    <div class="container" style="padding-top: 10px;">
+        <button class="btn btn-primary visibility_toggle" data-container-id="monthly_rent_create_div" data-hide="1">
+            Add Monthly Rent
+        </button>
+
+        <div class="container" id="monthly_rent_create_div" style="display: none;">
+            <h2>New Monthly Rent</h2>
+            <form class="form-horizontal" id="monthly_rent_creation_form" action="{% url 'monthly_rent_create_view' %}">
+                {% csrf_token %}
+                <input type="hidden" name="tenant" value="{{ tenant.id }}">
+                <input type="hidden" name="booking" value="{{ booking.id }}">
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Start Date</label>
+                    <div class="col-sm-2">
+                        <input type="date" name="start_date" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Rent</label>
+                    <div class="col-sm-2">
+                        <input type="number" name="rent" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-9">
+                        <button type="submit" class="btn">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        {% endif %}
+    {% endif %}
+
+{% endblock %}
+
+
+{% block script %}
+<script>
+    {% if request.user.is_staff %}
+    ajax_form_submit('#monthly_rent_creation_form', {
+        reload_after_submit: true
+    });
+
+    $('.delete_monthly_rent_btn').click(function () {
+        if (!confirm("Are you sure you want to delete the monthly rent?")) {
+            return;
+        }
+
+        let monthly_rent_id = $(this).attr('data-monthly-rent-id');
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'monthly_rent_delete_view' %}",
+            data: {
+                'booking_id': {{ booking.id }},
+                'monthly_rent_id': monthly_rent_id
+            },
+            success: function (data) {
+                alert(data['detail']);
+                location.reload();
+            },
+            error: function( jqXhr, textStatus, errorThrown ){
+                console.log(errorThrown);
+                alert("There was some error in deleting the monthly rent.");
+                location.reload();
+            }
+        });
+    });
+    {% endif %}
+</script>
+{% endblock %}

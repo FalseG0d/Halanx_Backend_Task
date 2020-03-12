@@ -1,0 +1,688 @@
+<html>
+<head>
+    {% load staticfiles %}
+    <title>Customer Analytics</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ gmapkey }}&callback=map_customers"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!--
+		<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+		<script src="{% static "js/nouislider.js" %}"></script>
+		<script src="{% static "js/nouislider.min.js" %}"></script>
+		<link rel="stylesheet" type="text/css" href="{% static "css/nouislider.css" %}">
+		<link rel="stylesheet" type="text/css" href="{% static "css/nouislider.min.css" %}">-->
+</head>
+
+<style>
+    .row {
+        border: 1px solid black;
+        background-color: white;
+    }
+
+    .col {
+        margin: 5px;
+    }
+
+    .container {
+        position: relative;
+        display: table;
+        width: 100%;
+    }
+
+    .left-half {
+        position: absolute;
+        left: 0px;
+        width: 47%;
+        margin: 1%;
+        height: 80vh;
+        overflow-y: scroll;
+        border: 1px solid black;
+        padding: 5px;
+        background-color: #C0C0C0;
+    }
+
+    .right-half {
+        position: absolute;
+        right: 0px;
+        width: 47%;
+        margin: 1%;
+        height: 80vh;
+        border: 1px solid black;
+        padding: 5px;
+        background-color: #C0C0C0;
+    }
+
+    table {
+        width: 100%;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 5px;
+        text-align: center;
+    }
+
+    #map {
+        height: 85%;
+    }
+
+</style>
+
+<body>
+
+<h1>
+    <center>User Analytics Dashboard</center>
+</h1>
+
+<div id="map_form" style="display:none;">
+    <div id="map"></div>
+    <center>
+        <button id="hide_map">Hide</button>
+    </center>
+</div>
+
+<div id="sms_form" style="display:none;">
+    <div class="row">
+        <div class="col">
+            <label>Message:</label><br>
+            <textarea id="sms_msg" style="width:50%;height:100px;"></textarea>
+        </div>
+
+        <div class="col">
+            <button id="send_sms">Send</button>
+            <button id="hide_sms">Hide</button>
+        </div>
+    </div>
+</div>
+
+<div id="notif_form" style="display:none;">
+    <div class="row">
+
+        <div class="col">
+            <label>category</label>
+            <select id="notif_category" required>
+                <option value="" disabled selected>---------------</option>
+                <option value="Alert">Alert</option>
+                <option value="Announcement">Announcement</option>
+            </select>
+        </div>
+
+        <div class="col">
+            <label>Title:</label>
+            <input id="notif_title" style="width:50%;">
+        </div>
+
+
+        <div class="col">
+            <label>Content:</label><br>
+            <textarea id="notif_content" style="width:50%;height:75px;"></textarea>
+        </div>
+
+        <div class="col">
+            <button id="send_notif">Send</button>
+            <button id="hide_notif">Hide</button>
+        </div>
+    </div>
+</div>
+
+
+<div id="email_form" style="display:none;">
+    <div class="row">
+
+        <div class="col">
+            <label>Subject:</label>
+            <input id="email_subject" style="width:50%;">
+        </div>
+
+        <div class="col">
+            <label>Content:</label><br>
+            <textarea id="email_content" style="width:50%;height:75px;"></textarea>
+        </div>
+
+        <div class="col">
+            <button id="send_email">Send</button>
+            <button id="hide_email">Hide</button>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+
+    <div class="left-half">
+
+        <div class="row">
+            <div class="col">
+                <b>User profile</b>
+            </div>
+
+            <div class="col">
+                <label>Is registered</label>
+                <select id="is_registered">
+                    <option value="all" selected>All</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+
+            <div class="col">
+                <label>Is Email verified</label>
+                <select id="is_email_verified">
+                    <option value="all" selected>All</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+
+            <div class="col">
+                <label>Profile completion %</label>
+                <input id="profile_min" type="number" value=0>-<input id="profile_max" type="number" value=100>
+            </div>
+
+
+            <div class="col">
+                <label>Account balance</label>
+                <input id="balance_min" type="number" value=0>-<input id="balance_max" type="number" value=100000>
+            </div>
+
+
+            <div class="col">
+                <label>H Cash</label>
+                <input id="hcash_min" type="number" value=0>-<input id="hcash_max" type="number" value=100000>
+            </div>
+
+            <div class="col">
+                <label>Last visit</label>
+                <input id="last_visit_from" type="date">-<input id="last_visit_to" type="date">
+            </div>
+
+            <div class="col">
+                <label>Location</label><input id="location" type="text">
+                <label>Radius (in km)</label><input id="radius" type="number" value=10>
+            </div>
+
+
+            <div class="col">
+                <button id="profile">Filter</button>
+            </div>
+        </div>
+        <br>
+
+        <div class="row">
+            <div class="col">
+                <b>Post</b>
+            </div>
+
+            <div class="col">
+                <label>Time range</label>
+                <input id="post_from" type="date">-<input id="post_to" type="date">
+            </div>
+
+            <div class="col">
+                <label>Count range</label>
+                <input id="post_min" type="number" value=0>-<input id="post_max" type="number" value=100>
+            </div>
+
+            <div class="col">
+                <button id="post">Filter</button>
+            </div>
+        </div>
+        <br>
+
+        <div class="row">
+            <div class="col">
+                <b>Order</b>
+            </div>
+
+            <div class="col">
+                <label>Time range</label>
+                <input id="order_from" type="date">-<input id="order_to" type="date">
+            </div>
+
+            <div class="col">
+                <label>Count range</label>
+                <input id="order_min" type="number" value=0>-<input id="order_max" type="number" value=100>
+            </div>
+
+            <div class="col">
+                <button id="order">Filter</button>
+            </div>
+        </div>
+        <br>
+
+        <div class="row">
+            <div class="col">
+                <b>Group order</b>
+            </div>
+
+            <div class="col">
+                <label>Time range</label>
+                <input id="group_order_from" type="date">-<input id="group_order_to" type="date">
+            </div>
+
+            <div class="col">
+                <label>Count range</label>
+                <input id="group_order_min" type="number" value=0>-<input id="group_order_max" type="number" value=100>
+            </div>
+
+            <div class="col">
+                <button id="group_order">Filter</button>
+            </div>
+        </div>
+        <br>
+
+        <div class="row">
+            <div class="col">
+                <b>Subscription</b>
+            </div>
+
+            <div class="col">
+                <label>Time range</label>
+                <input id="subs_from" type="date">-<input id="subs_to" type="date">
+            </div>
+
+            <div class="col">
+                <label>Count range</label>
+                <input id="subs_min" type="number" value=0>-<input id="subs_max" type="number" value=100>
+            </div>
+
+            <div class="col">
+                <button id="subs">Filter</button>
+            </div>
+        </div>
+        <br>
+
+        <div class="row">
+            <div class="col">
+                <b>Poll created</b>
+            </div>
+
+            <div class="col">
+                <label>Time range</label>
+                <input id="poll_from" type="date">-<input id="poll_to" type="date">
+            </div>
+
+            <div class="col">
+                <label>Count range</label>
+                <input id="poll_min" type="number" value=0>-<input id="poll_max" type="number" value=100>
+            </div>
+
+            <div class="col">
+                <button id="poll">Filter</button>
+            </div>
+        </div>
+        <br>
+
+        <div class="row">
+            <div class="col">
+                <b>Poll assigned</b>
+            </div>
+
+            <div class="col">
+                <label>Time range</label>
+                <input id="title_from" type="date">-<input id="title_to" type="date">
+            </div>
+
+            <div class="col">
+                <label>Count range</label>
+                <input id="title_min" type="number" value=0>-<input id="title_max" type="number" value=100>
+            </div>
+
+            <div class="col">
+                <button id="title">Filter</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="right-half">
+        <div class="row" style="height:7%;"
+        ">
+        <div class="col">
+            <button id="reset">Reset</button>
+            <button id="sms">SMS</button>
+            <button id="email">Email</button>
+            <button id="notif">Notification</button>
+            <button id="show_map">Show map</button>
+            <p id="item_count" style="float:right;"></p>
+        </div>
+    </div>
+    <br>
+
+    <div class="row" style="height:88%;overflow-y:scroll;">
+        <table>
+            <thead>
+            <tr>
+                <th><input type="checkbox" id="select-all"></th>
+                <th>Username</th>
+                <th>is_full name</th>
+                <th>Profile pic</th>
+                <th>Email</th>
+                <th>Phone No</th>
+                <th>Location</th>
+            </tr>
+            </thead>
+            <tbody id="customers">
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+<div id="wait" style="display:none;width:69px;height:89px;position:absolute;top:50%;left:50%;padding:2px;"><img
+        src='https://www.w3schools.com/jquery/demo_wait.gif' width="64" height="64"/></div>
+
+</body>
+
+
+<script>
+    var markers = {};
+    $(document).ready(function () {
+
+        $(document).ajaxStart(function () {
+            $("#wait").css("display", "block");
+        });
+
+        $(document).ajaxComplete(function () {
+            $("#wait").css("display", "none");
+        });
+
+        $('#select-all').click(function (event) {
+            if (this.checked) {
+                $(':checkbox').prop('checked', true);
+            } else {
+                $(':checkbox').prop('checked', false);
+            }
+        });
+
+
+        var customers = [];
+        var all_customers = [];
+
+        function print_customers() {
+            var str = '';
+            var customers_tbody = $('#customers');
+
+            for (var i = 0; i < customers.length; i++) {
+                str += '<tr id=customer_'
+                    + customers[i]['id']
+                    + ' tabindex=\'1\' >'
+                    + '<td>'
+                    + '<input type="checkbox" checked id="select' + customers[i]['id'] + '">'
+                    + '</td>'
+                    + '<td>'
+                    + '<a target="_blank" href="https://api.halanx.com/admin/UserBase/customer/'
+                    + customers[i]['id']
+                    + '/change/">'
+                    + customers[i]['username']
+                    + '</a>'
+                    + '</td>'
+                    + '<td>'
+                    + customers[i]['name']
+                    + '</td>'
+                    + '<td>'
+                    + '<img height=50px width=50px src='
+                    + customers[i]['pic']
+                    + ' />'
+                    + '</td>'
+                    + '<td>'
+                    + customers[i]['email']
+                    + '</td>'
+                    + '<td>'
+                    + customers[i]['phone']
+                    + '</td>'
+                    + '<td>'
+                    + '<button onclick="focus_marker('
+                    + customers[i]['id']
+                    + ')" >Locate</button>'
+                    + '</td>'
+                    + '</tr>';
+            }
+            customers_tbody.html(str);
+            $('#select-all').prop('checked', true);
+            $('#item_count').html(customers.length + ' users');
+        }
+
+
+        function get_customers() {
+            $.ajax({
+                type: "GET",
+                url: "/users/ajax_filter/",
+                success: function (data) {
+                    customers = data['customers'];
+                    all_customers = customers;
+                    print_customers(customers);
+                    map_customers();
+                }
+            });
+        }
+
+        get_customers();
+
+        $("#reset").click(function () {
+            customers = all_customers;
+            print_customers(customers);
+            $("#post").prop('disabled', false);
+            $("#order").prop('disabled', false);
+            $("#group_order").prop('disabled', false);
+            $("#subs").prop('disabled', false);
+            $("#poll").prop('disabled', false);
+            $("#title").prop('disabled', false);
+            $("#profile").prop('disabled', false);
+        });
+
+
+        $("#profile").click(function () {
+            $(this).prop('disabled', true);
+            var data = {};
+            data['type'] = this.id;
+            data['customers'] = JSON.stringify(customers);
+            data['is_registered'] = $('#is_registered').val();
+            data['is_email_verified'] = $('#is_email_verified').val();
+            data['profile_min'] = $('#profile_min').val();
+            data['profile_max'] = $('#profile_max').val();
+            data['balance_min'] = $('#balance_min').val();
+            data['balance_max'] = $('#balance_max').val();
+            data['hcash_min'] = $('#hcash_min').val();
+            data['hcash_max'] = $('#hcash_max').val();
+            data['last_visit_from'] = $('#last_visit_from').val();
+            data['last_visit_to'] = $('#last_visit_to').val();
+            data['location'] = $('#location').val();
+            data['radius'] = $('#radius').val();
+
+            $.ajax({
+                type: "POST",
+                url: "/users/ajax_filter/",
+                data: data,
+                success: function (data) {
+                    customers = data['customers'];
+                    print_customers(customers);
+                    map_customers();
+                }
+            });
+        });
+
+
+        $("#post, #order, #group_order, #subs, #poll, #title").click(function () {
+            $(this).prop('disabled', true);
+            var data = {};
+            data['type'] = this.id;
+            data['customers'] = JSON.stringify(customers);
+            data[this.id + '_min'] = $('#' + this.id + '_min').val();
+            data[this.id + '_max'] = $('#' + this.id + '_max').val();
+            data[this.id + '_from'] = $('#' + this.id + '_from').val();
+            data[this.id + '_to'] = $('#' + this.id + '_to').val();
+
+            $.ajax({
+                type: "POST",
+                url: "/users/ajax_filter/",
+                data: data,
+                success: function (data) {
+                    customers = data['customers'];
+                    print_customers(customers);
+                    map_customers();
+                }
+            });
+        });
+
+        /*---------------------------------- SMS -------------------------------*/
+
+        $("#sms").click(function () {
+            $("#sms_form").show();
+        });
+
+        $("#hide_sms").click(function () {
+            $("#sms_form").hide();
+        });
+
+        $("#send_sms").click(function () {
+            var data = {};
+
+            for (var i = 0; i < customers.length; i++) {
+                customers[i]['select'] = $("#select" + customers[i]['id']).prop('checked');
+            }
+
+            data['customers'] = JSON.stringify(customers);
+
+            data['msg'] = $('#sms_msg').val();
+
+            $.ajax({
+                type: "POST",
+                url: "/users/analytics/sms/",
+                data: data,
+                success: function (data) {
+                    alert("sms sent successfully!")
+                }
+            });
+        });
+
+        /*------------------------------------- Notification -----------------------------*/
+
+        $("#notif").click(function () {
+            $("#notif_form").show();
+        });
+
+        $("#hide_notif").click(function () {
+            $("#notif_form").hide();
+        });
+
+        $("#send_notif").click(function () {
+            var data = {};
+
+            for (var i = 0; i < customers.length; i++) {
+                customers[i]['select'] = $("#select" + customers[i]['id']).prop('checked');
+            }
+
+            data['customers'] = JSON.stringify(customers);
+            data['category'] = $('#notif_category').val();
+            data['title'] = $('#notif_title').val();
+            data['content'] = $('#notif_content').val();
+
+            if (data['category'] == null) {
+                alert("No category was selected!");
+                return
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/users/analytics/notification/",
+                data: data,
+                success: function (data) {
+                    alert("notification sent successfully!")
+                }
+            });
+        });
+
+        /*--------------------------------- EMAIL ------------------------------------------*/
+        $("#email").click(function () {
+            $("#email_form").show();
+        });
+
+        $("#hide_email").click(function () {
+            $("#email_form").hide();
+        });
+
+        $("#send_email").click(function () {
+            var data = {};
+
+            for (var i = 0; i < customers.length; i++) {
+                customers[i]['select'] = $("#select" + customers[i]['id']).prop('checked');
+            }
+
+            data['customers'] = JSON.stringify(customers);
+            data['subject'] = $('#email_subject').val();
+            data['content'] = $('#email_content').val();
+
+            $.ajax({
+                type: "POST",
+                url: "/users/analytics/email/",
+                data: data,
+                success: function (data) {
+                    alert("email sent successfully!")
+                }
+            });
+        });
+
+
+        /*--------------------------------- MAP ------------------------------------------*/
+
+        $("#show_map").click(function () {
+            $("#map_form").show();
+        });
+
+        $("#hide_map").click(function () {
+            $("#map_form").hide();
+        });
+
+
+        function map_customers() {
+            if (customers == null) {
+                return;
+            }
+
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: new google.maps.LatLng(customers[0]['lat'], customers[0]['lng']),
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            });
+
+            var infowindow = new google.maps.InfoWindow();
+            var marker, i;
+
+            for (i = 0; i < customers.length; i++) {
+                marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(customers[i]['lat'] + (Math.random() / 25000), customers[i]['lng'] + (Math.random() / 25000)),
+                    map: map,
+                    animation: google.maps.Animation.DROP
+                });
+
+                markers[customers[i]['id']] = marker;
+
+                google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                    return function () {
+                        infowindow.setContent('<img src=' + customers[i]['pic'] + ' width="80" height="80" /><br/>' +
+                            '<p><center>' + customers[i]['name'] + '</center></p>' +
+                            '<center><button onclick="focus_customer(' + customers[i]['id'] + ')" >Explore</button></center>');
+                        infowindow.open(map, marker);
+                    }
+                })(marker, i));
+            }
+        }
+
+
+    });
+
+    function focus_customer(id) {
+        $('#customer_' + id).focus();
+        $('#customer_' + id).effect("highlight", {color: '#00ffe9'}, 3000);
+    }
+
+    function focus_marker(id) {
+        google.maps.event.trigger(markers[id], 'click');
+    }
+
+</script>
+</html>
+  

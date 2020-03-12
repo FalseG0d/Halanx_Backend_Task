@@ -1,0 +1,158 @@
+{% extends 'area_manager_base.html' %}
+
+
+{% block title %}
+Manage Tenants
+{% endblock %}
+
+
+{% block heading %}
+Manage Tenants
+{% endblock %}
+
+
+{% block main %}
+
+    <!-- Tenant Phone No. Input -->
+    <div class="container">
+        <form method="POST">
+            {% csrf_token %}
+            <label style="display: block; padding: 12px 0;">
+                Tenant Phone Number
+            </label>
+            <div style="width: 100%; display: flex;">
+                <input type="text" name="phone_no" placeholder="{{ tenant.customer.phone_no }}{{ phone_no }}">
+                <button id="sub_button" class="btn" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Tenant not found msg -->
+    {% if msg %}
+    <div class="container">
+        <h3 style="color: red">{{ msg }}</h3>
+        {% if err == 'tenant_not_found' %}
+        <form method="POST" id="tenant_register_notify_sms_form" action="{{ send_sms_url }}">
+            {% csrf_token %}
+            <input type="hidden" name="phone_no" value="{{ phone_no }}">
+            <h3>Send SMS to {{ phone_no }}</h3>
+            <label>
+                <textarea name="msg" rows="3" cols="50">Hey! Please download the Halanx App now and register yourself to Halanx Homes.
+https://goo.gl/QvsMoe
+                </textarea>
+            </label><br>
+            <button class="btn btn-primary" type="submit">Send</button>
+        </form>
+
+        <button class="btn btn-green" type="submit" onclick="window.location.href='{% url 'create_new_tenant_view' %}'">Create New Tenant</button>
+        {% endif %}
+    </div>
+    {% endif %}
+
+
+    <!-- Tenant found -->
+    {% if tenant %}
+    <div style="padding-top: 10px;">
+        <!-- Options -->
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-2">
+                    <button type="submit" class="btn btn-green btn-block" onclick="window.open('{% url 'onboard_page' tenant.id %}', '_blank')">Onboard</button>
+                </div>
+
+                <div class="col-sm-2">
+                    <button type="submit" class="btn btn-green btn-block" onclick="window.open('{% url 'move_in_page' tenant.id %}', '_blank')">Move-In</button>
+                </div>
+
+                <div class="col-sm-2">
+                    <button type="submit" class="btn btn-green btn-block" onclick="window.open('{% url 'move_out_page' tenant.id %}', '_blank')">Move-Out</button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-2">
+                    <button type="submit" class="btn btn-green btn-block" onclick="window.open('{% url 'tenant_profile_edit_view' tenant.id %}', '_blank')">Update Profile</button>
+                </div>
+
+                 <div class="col-sm-2">
+                    <button type="submit" class="btn btn-green btn-block" onclick="window.open('{% url 'monthly_rents_page' tenant.id %}', '_blank')">Monthly Rents</button>
+                </div>
+
+                <div class="col-sm-2">
+                    <button type="submit" class="btn btn-green btn-block" onclick="window.open('{% url 'tenant_payments_page' tenant.id %}', '_blank')">Payments</button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-2">
+                    <button type="submit" class="btn btn-green btn-block" onclick="window.open('{% url 'tenant_bookings_page' tenant.id %}', '_blank')">Bookings</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tenant detail -->
+        <div class="container">
+            <h2>Personal Details</h2>
+            <table class="border" border="1">
+                <tr>
+                    <td><b>Name</b></td>
+                    <td>{{ tenant.name }}</td>
+                </tr>
+                <tr>
+                    <td><b>Phone Number</b></td>
+                    <td>{{ tenant.phone_no }}</td>
+                </tr>
+                <tr>
+                    <td><b>Permanent Address</b></td>
+                    <td>{{ tenant.permanent_address }}</td>
+                </tr>
+                <tr>
+                    <td><b>Parent Name</b></td>
+                    <td>{{ tenant.parent_name }}</td>
+                </tr>
+                <tr>
+                    <td><b>Current Status</b></td>
+                    <td>{{ tenant.current_stay }}</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Tenant profile missing fields -->
+        <div class="container">
+            <div style="color: {% if tenant_profile_missing_fields %}red{% else %}green{% endif %};">
+                <h4>Profile {{ tenant_profile_completion_percentage }}% complete.</h4>
+                {% if tenant_profile_missing_fields %}
+                    <p>Please ask tenant to fill following fields:</p>
+                    <ul>
+                        {% for field in tenant_profile_missing_fields %}
+                            <li>{{ field }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+    {% endif %}
+
+{% endblock %}
+
+
+{% block script %}
+<script>
+    $('#tenant_register_notify_sms_form').submit(function (e) {
+        e.preventDefault();
+        let form = $(this);
+        let url = form.attr('action');
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: form.serialize(),
+            success: function (data) {
+                    alert("Successfully sent the sms!");
+                }
+        });
+    });
+</script>
+{% endblock %}

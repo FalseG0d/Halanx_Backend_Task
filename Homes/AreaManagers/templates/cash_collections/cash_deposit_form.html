@@ -1,0 +1,124 @@
+{% extends 'area_manager_base.html' %}
+
+
+{% block title %}
+Cash Deposit
+{% endblock %}
+
+
+{% block heading %}
+Cash Deposit
+{% endblock %}
+
+
+{% block main %}
+    {% if msg %}
+    <div>
+        <h3 style="color: red">{{ msg }}</h3>
+    </div>
+    {% else %}
+    <div>
+        <form id="cash_deposit_form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <table class="border" border="1" id="deposits">
+                <thead>
+                    <th>Transaction Id</th>
+                    <th>Amount</th>
+                    <th>Collection Time</th>
+                    <th></th>
+                </thead>
+
+                <tbody>
+                    {% for deposit in deposits %}
+                    <tr>
+                        <td>{{ deposit.id }}</td>
+                        <td>₹{{ deposit.amount }}</td>
+                        <td>{{ deposit.actual_collection_time }}</td>
+                        <td><input type="checkbox" name="checked" class="amount" data-amount="{{ deposit.amount }}"
+                                value="{{ deposit.id }}"></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div style="margin: 16px 0;">
+                <label for="total_amount">
+                    Total
+                    <br>
+                    <input type="text" id="total_amount" value="0.00" readonly>
+                </label>
+            </div>
+
+            <div>
+                <label>
+                    Deposit Note
+                    <br>
+                    <textarea name="deposit_note"></textarea>
+                </label>
+            </div>
+
+            <div>
+                <label>
+                    Upload Reference Image
+                </label>
+                <input type="file" id="deposit_reference_image" name="deposit_reference_image" accept="image/*" />
+                <img id="deposit_reference_image_preview" src="#" alt="" height="100" width="100"/>
+            </div>
+
+            <div>
+                <button class="btn btn-red" type="submit" id="confirm">Confirm</button>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+{% endblock %}
+
+
+{% block script %}
+<script>
+    function getTotal(objSelector) {
+        let total = 0;
+        objSelector.each(function () {
+            total += parseInt($(this).attr('data-amount'));
+        });
+        if (total === 0) {
+            $('#total_amount').val('0.00');
+        } else {
+            $('#total_amount').val(total.toFixed(2));
+        }
+    }
+
+
+    $(document).ready(function () {
+        $(".amount").change(function () {
+            getTotal($(".amount:checked"));
+        });
+
+        $("#deposit_reference_image").change(function() {
+            readURL(this, '#deposit_reference_image_preview');
+        });
+
+        $('#cash_deposit_form').submit(function (e) {
+            e.preventDefault();
+
+            if (confirm("Are you sure that you have deposited ₹" + $('#total_amount').val() + '?')) {
+                let form = $(this);
+                let data =  new FormData(this);
+
+                $.ajax({
+                    type: 'POST',
+                    url: form.attr('action'),
+                    data: data,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        alert(data['detail']);
+                        location.reload();
+                    }
+                });
+            }
+        })
+    })
+</script>
+{% endblock %}

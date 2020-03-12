@@ -1,0 +1,135 @@
+{% extends 'area_manager_base.html' %}
+
+
+{% block title %}
+House Visits Dashboard
+{% endblock %}
+
+
+{% block heading %}
+House Visits Dashboard
+{% endblock %}
+
+
+{% block main %}
+    {% if msg %}
+    <div>
+        <h3 style="color: red">{{ msg }}</h3>
+    </div>
+
+    {% else %}
+    <div style="overflow-x: auto;">
+        <h2>Pending Visits</h2>
+        {% if pending_visits %}
+        <table class="border" border="1" id="visits_table">
+            <thead>
+                <th>House</th>
+                <th>Scheduled Visit Time</th>
+                <th>Customer Name</th>
+                <th>Customer Phone No.</th>
+                <th>Code</th>
+                <th></th>
+            </thead>
+
+            <tbody>
+                {% for visit in pending_visits %}
+                <tr id="visit_{{ visit.id }}">
+                    <td>
+                        {{ visit.house.name }},
+                        <br>
+                        <em>{{ visit.house.address }}</em>
+                        <br>
+                        <a href="https://www.google.com/maps/search/?api=1&query={{ visit.house.address.coordinates }}"
+                            target="_blank"><i class="fa fa-location-arrow fa-2x" aria-hidden="true" style="color:blue"></i></a>
+                    </td>
+                    <td>{{ visit.scheduled_visit_time }}</td>
+                    <td>{{ visit.customer.name }}</td>
+                    <td>{{ visit.customer.phone_no }}</td>
+                    <td>{{ visit.code }}</td>
+                    <td><button type="button" class="btn btn-green visit_complete" data-id="{{ visit.id }}"><span class="extra">Complete&nbsp;</span>
+                            <i class="fa fa-check"></i></button></td>
+                </tr>
+                <tr style="display: none;" id="visit_note_{{ visit.id }}">
+                    <td colspan=5>
+                        <div>
+                            <label>Notes: <textarea></textarea></label>
+                        </div>
+                    </td>
+                    <td colspan=1>
+                        <button type="button" class="btn visit_confirm" data-id="{{ visit.id }}">Confirm</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <h3>No pending visits.</h3>
+        {% endif %}
+    </div>
+
+    <div style="overflow-x: auto;">
+        <h2>Completed Visits</h2>
+        {% if completed_visits %}
+        <table class="border" border="1" id="visits_table">
+            <thead>
+                <th>House</th>
+                <th>Scheduled Visit Time</th>
+                <th>Customer Name</th>
+                <th>Customer Phone No.</th>
+                <th>Notes</th>
+            </thead>
+
+            <tbody>
+                {% for visit in completed_visits %}
+                <tr id="visit_{{ visit.id }}">
+                    <td>
+                        {{ visit.house.name }},
+                        <br>
+                        <em>{{ visit.house.address }}</em>
+                        <br>
+                        <a href="https://www.google.com/maps/search/?api=1&query={{ visit.house.address.coordinates }}"
+                            target="_blank"><i class="fa fa-location-arrow fa-2x" aria-hidden="true" style="color:blue"></i></a>
+                    </td>
+                    <td>{{ visit.scheduled_visit_time }}</td>
+                    <td>{{ visit.customer.name }}</td>
+                    <td>{{ visit.customer.phone_no }}</td>
+                    <td>{{ visit.area_manager_notes }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <h3>No completed visits.</h3>
+        {% endif %}
+    </div>
+    {% endif %}
+{% endblock %}
+
+{% block script %}
+<script>
+    $('.visit_complete').click(function () {
+        $(this).prop('disabled', true);
+        $('#visits_table tr[id="visit_note_' + $(this).attr('data-id') + '"]').show();
+    });
+
+    $('.visit_confirm').click(function () {
+        let visit_id = parseInt($(this).attr('data-id'));
+        let data = {
+            'id': visit_id,
+            'note': $('#visits_table tr[id="visit_note_' + $(this).attr('data-id') + '"] td:first textarea').val()
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '{{ house_visits_url }}',
+            data: data,
+            success: function (data) {
+                alert("Successfully saved the visit details.");
+                location.reload();
+                // $('#visits_table tr[id="visit_' + visit_id + '"]').hide();
+                // $('#visits_table tr[id="visit_note_' + visit_id + '"]').hide();
+            }
+        })
+    });
+</script>
+{% endblock %}

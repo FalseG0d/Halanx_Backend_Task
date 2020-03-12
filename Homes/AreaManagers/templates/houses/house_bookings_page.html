@@ -1,0 +1,82 @@
+{% extends 'area_manager_base.html' %}
+
+
+{% block title %}
+House Bookings
+{% endblock %}
+
+
+{% block heading %}
+House Bookings
+{% endblock %}
+
+
+{% block main %}
+
+    <div>
+        <h3 style="color: red">{{ msg }}</h3>
+    </div>
+
+    {% if bookings %}
+    <div class="container">
+        <table class="border" border="1">
+            <thead>
+                <th>Id</th>
+                <th>Tenant</th>
+                <th>Space</th>
+                <th>License Start Date</th>
+                <th>License End Date</th>
+                <th>Rent</th>
+                <th>Security Deposit</th>
+                <th>Status</th>
+                <th>Moved Out</th>
+                <th>Edit</th>
+            </thead>
+
+            <tbody>
+                {% for booking in bookings %}
+                <tr>
+                    <td>{{ booking.id }}</td>
+                    <td>
+                        {{ booking.tenant.name }} ({{ booking.tenant.phone_no }})
+                    </td>
+                    <td>{{ booking.space.name }} ({{ booking.space.subtype }})</td>
+                    <td>{{ booking.license_start_date }}</td>
+                    <td>{{ booking.license_end_date }}</td>
+                    <td>&#8377;{{ booking.rent }}</td>
+                    <td>&#8377;{{ booking.security_deposit }}</td>
+                    <td>{{ booking.get_status_display }}</td>
+                    <td>{{ booking.moved_out }}</td>
+                    <td><button class="btn visibility_toggle" data-container-id="edit-booking-{{ booking.id }}">
+                            <i class="fa fa-edit" aria-hidden="true" style="color: blue;"></i>
+                        </button>
+                    </td>
+                </tr>
+
+                <tr id="edit-booking-{{ booking.id }}" style="display: none; background-color: #999999">
+                    <td colspan="10">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <button type="submit" class="btn btn-green btn-block" onclick="window.open('{% url 'move_in_page' booking.tenant.id %}?booking={{ booking.id }}', '_blank')">Move-In</button>
+                            </div>
+
+                            <div class="col-sm-offset-1 col-sm-2">
+                                <button type="submit" class="btn btn-green btn-block" onclick="window.open('{% url 'move_out_page' booking.tenant.id %}?booking={{ booking.id }}', '_blank')">Move-Out</button>
+                            </div>
+
+                            <div class="col-sm-offset-1 col-sm-2">
+                                <button type="submit" class="btn btn-green btn-block" onclick="window.open('{% url 'monthly_rents_page' booking.tenant.id %}?booking={{ booking.id }}', '_blank')">Monthly Rents</button>
+                            </div>
+
+                            <div class="col-sm-offset-1 col-sm-2">
+                                <button type="submit" class="btn btn-green btn-block" onclick="window.open('{% url 'tenant_payments_page' booking.tenant.id %}?booking={{ booking.id }}', '_blank')">Payments</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+{% endblock %}

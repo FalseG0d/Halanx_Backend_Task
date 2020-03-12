@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="Select House" style="width: 200px; height: 100px;border: 4px solid blue">
+    <form action="" method="get">
+        <select name="house">
+            {% for entry in houses %}
+            <option value="{{ entry.id }}"  {% if selected_house == entry %} selected {% endif %}>{{ entry }}</option>
+            {% endfor %}
+        </select>
+        <br/>
+        Selected House : {{selected_house}}
+        <br/>
+        <input type="submit" value="Submit">
+    </form>
+</div>
+
+
+<!--<table>-->
+<!--<thead>-->
+<!--{% for form in form_set.forms %}-->
+<!--{% if forloop.first %}-->
+<!--{% for field in form %}-->
+<!--<th>{{ field.label_tag }}</th>-->
+<!--{% endfor %}-->
+<!--{% endif %}-->
+<!--</thead>-->
+
+<!--<tbody>-->
+<!--<tr>-->
+<!--{% for field in form %}-->
+<!--<td>{{ field }}</td>-->
+<!--{% endfor %}-->
+<!--</tr>-->
+<!--{% endfor %}-->
+<!--</tbody>-->
+<!--</table>-->
+
+
+{% if success_msg %}
+    <div>
+        <h3 style="color: green">{{ success_msg }}</h3>
+    </div>
+{% endif %}
+{% if error_msg %}
+    <div>
+        <h3 style="color: red">{{ error_msg }}</h3>
+    </div>
+{% endif %}
+
+
+
+<form method='post'>
+    {{ form_set.management_form }}
+    {{ form_set.non_form_errors.as_ul }}
+    <table id="formset" class="form">
+        {% for form in form_set.forms %}
+        {% if forloop.first %}
+        <thead><tr>
+            {% for field in form.visible_fields %}
+            <th>{{ field.label|capfirst }}</th>
+            {% endfor %}
+        </tr></thead>
+        {% endif %}
+        <tr class="{% cycle row1 row2 %}">
+            {% for field in form.visible_fields %}
+            <td>
+                {# Include the hidden fields in the form #}
+                {% if forloop.first %}
+                {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+                {% endfor %}
+                {% endif %}
+                {{ field.errors.as_ul }}
+                {{ field }}
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+
+    <input type="submit">
+</form>
+</body>
+</html>

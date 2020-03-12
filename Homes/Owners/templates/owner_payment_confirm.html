@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Test Mail</title>
+</head>
+
+<body style="font-family: Arial, Helvetica, sans-serif; color: #333;">
+    <table width="480px" style="text-align: center;">
+        <tr>
+            <td>
+                <img src="https://halanxhomes.com/img/logo.png" width="80" alt="">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table width="100%" style="background-color: #fff;">
+                    <tr>
+                        <td>
+                            <table width="100%">
+                                <tr>
+                                    <td>
+                                        <h1>Thanks for your support!</h1>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h3>
+                                            {% if payment.type == 'withdrawal' %}
+                                            &#8377; {{ payment.amount }} has been successfully debited from your halanxhomes wallet to your registered bank account.
+                                            {% else %}
+                                             &#8377; {{ payment.amount }} has been successfully credited to your halanxhomes wallet.
+                                            {% endif %}
+                                        </h3>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <table width="100%" class="details">
+                                            <tr>
+                                                <td>
+                                                    <h2>Details</h2>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <p style="padding: 8px; margin: 0;">
+                                                        {{ payment.wallet.owner.name }}
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <p style="padding: 8px; margin: 0;">
+                                                        {{ payment.wallet.owner.address }}
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                            {% if payment.transaction %}
+                                            <tr>
+                                                <td>
+                                                    <p style="padding: 8px; margin: 0;">
+                                                        <strong>Mode of Payment</strong> - {{ payment.transaction.payment_gateway }}
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                            {% endif %}
+                                            <tr>
+                                                <td>
+                                                    <p style="padding: 8px; margin: 0;">
+                                                        <p style="padding: 8px; margin: 0;">
+                                                            Something wrong? Contact us <a style="color:blue;" href="https://halanxhomes.com/#/contact-us">here</a>
+                                                        </p>
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table width="100%">
+                    <tr>
+                        <td style="font-size: 12px; color: #777;">
+                            <p>
+                                33, First Floor, Pearls Omaxe Corporate Tower, Netaji
+                                Subhash Place, Delhi 110034
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-bottom: 12px;">
+                            <strong style="font-size: 18px">&copy; Halanx, 2019</strong>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

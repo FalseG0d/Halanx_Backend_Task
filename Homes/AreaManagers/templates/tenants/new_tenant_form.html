@@ -1,0 +1,75 @@
+{% extends 'area_manager_base.html' %}
+
+
+{% block title %}
+New Tenant Form
+{% endblock %}
+
+
+{% block heading %}
+New Tenant Form
+{% endblock %}
+
+
+{% block main %}
+
+   <div>
+        <h3 style="color: red">{{ msg }}</h3>
+   </div>
+
+
+    <div class="container">
+        <div class="container" id="booking_create_div">
+            <form class="form-horizontal" id="new_tenant_form" action="{% url 'create_new_tenant_view' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Phone No.</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="phone_no">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3">First Name</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="first_name">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Last Name</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="last_name">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-9">
+                        <button type="submit" class="btn">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block script %}
+<script>
+    $('#new_tenant_form').submit(function (e) {
+        e.preventDefault();
+        let form = $(this);
+        let url = form.attr('action');
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: form.serialize(),
+            success: function (data) {
+                    alert(data['detail']);
+                    location.replace("{{ tenant_manage_url }}");
+                }
+        });
+    });
+</script>
+{% endblock %}

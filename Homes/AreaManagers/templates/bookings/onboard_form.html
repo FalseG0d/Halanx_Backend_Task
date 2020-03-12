@@ -1,0 +1,136 @@
+{% extends 'area_manager_base.html' %}
+
+
+{% block title %}
+Tenant Onboarding
+{% endblock %}
+
+
+{% block heading %}
+Tenant Onboarding
+{% endblock %}
+
+
+{% block main %}
+
+   <div>
+        <h3 style="color: red">{{ msg }}</h3>
+   </div>
+
+    <!-- No existing booking -->
+    {% if tenant and not booking %}
+    <div class="container">
+        <button class="btn btn-primary visibility_toggle" data-container-id="booking_create_div" data-hide="1">
+            Create Booking
+        </button>
+
+        <div class="container" id="booking_create_div" style="display: none;">
+            <h2>New Booking</h2>
+            <form class="form-horizontal" id="booking_creation_form" action="{{ existing_tenant_booking_url }}">
+                {% csrf_token %}
+                <input type="hidden" name="tenant" value="{{ tenant.id }}">
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Select House</label>
+                    <div class="col-sm-2">
+                       <select name="house" id="house_select" required>
+                            <option disabled selected value> ----------- </option>
+                            {% for house in houses %}
+                            <option value="{{ house.id }}">{{ house.name }}, {{ house.address }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Space ID</label>
+                    <div class="col-sm-2">
+                        <input type="number" name="space">
+                    </div>
+                    <div class="col-sm-2">
+                        <a id="show_spaces" href="#" target="_blank" style="display: none;">Show spaces</a>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Token Amount</label>
+                    <div class="col-sm-2">
+                        <input type="number" name="token_amount">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Onboarding Charges</label>
+                    <div class="col-sm-2">
+                        <input type="number" name="onboarding_charges">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Rent</label>
+                    <div class="col-sm-2">
+                        <input type="number" name="rent">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Security Deposit</label>
+                    <div class="col-sm-2">
+                        <input type="number" name="security_deposit">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3">License Start Date (Original)</label>
+                    <div class="col-sm-2">
+                        <input type="date" name="original_license_start_date">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3">License Start Date (Halanx Homes)</label>
+                    <div class="col-sm-2">
+                        <input type="date" name="license_start_date">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3">License End Date</label>
+                    <div class="col-sm-2">
+                        <input type="date" name="license_end_date">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Security Deposit held by Owner</label>
+                    <div class="col-sm-2">
+                        <input type="checkbox" name="security_deposit_held_by_owner">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-9">
+                        <button type="submit" class="btn">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}
+
+
+{% block script %}
+<script>
+    ajax_form_submit('#booking_creation_form', {
+        success_callback: function () {
+            location.replace("{{ tenant_manage_url }}");
+        }
+    });
+
+    $('#house_select').on('change', function() {
+        let show_spaces_link = $('#show_spaces');
+        show_spaces_link.attr('href', "{% url 'house_edit_index_page' %}"+this.value+"/");
+        show_spaces_link.show();
+    });
+</script>
+{% endblock %}
